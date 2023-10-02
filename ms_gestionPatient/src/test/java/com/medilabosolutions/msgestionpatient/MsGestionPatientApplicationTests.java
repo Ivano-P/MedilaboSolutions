@@ -1,4 +1,4 @@
-package com.medilabosolutions.ms_gestionPatient;
+package com.medilabosolutions.msgestionpatient;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
