@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Détail du patient</title>
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+</head>
+<body class="dark-theme">
+
+<div class="patient-details">
+  <h2>Détails du patient</h2>
+  <div class="detail-card">
+    <p><strong>Prénom :</strong> <span th:text="${patient.prenom}"></span></p>
+    <p><strong>Nom :</strong> <span th:text="${patient.nom}"></span></p>
+    <p><strong>Date de naissance :</strong> <span th:text="${patient.dateDeNaissance}"></span></p>
+    <p><strong>Genre :</strong> <span th:text="${patient.genre}"></span></p>
+    <p><strong>Adresse postale :</strong>
+      <span th:text="${patient.adressePostale != null && !patient.adressePostale.isEmpty() ? patient.adressePostale : 'non renseigné'}"></span>
+    </p>
+    <p><strong>Numéro de téléphone :</strong>
+      <span th:text="${patient.numeroDeTelephone != null && !patient.numeroDeTelephone.isEmpty() ? patient.numeroDeTelephone : 'non renseigné'}"></span>
+    </p>
+  </div>
+</div>
+
+</body>
+</html>
