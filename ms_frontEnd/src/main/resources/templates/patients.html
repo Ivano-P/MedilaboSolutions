@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
   <title>Liste des patients</title>
   <link rel="stylesheet" th:href="@{/styles.css}" />
@@ -10,7 +10,7 @@
   <h2>Liste des patients</h2>
   <ul>
     <li th:each="patient : ${patients}">
-      <a th:href="@{'/patient/details/' + ${patient.id}}">
+      <!-- <a th:href="@{'/patient/details/' + ${patient.id}}"> -->
         <div class="patient-card">
           <span th:text="${patient.prenom} + ' ' + ${patient.nom}"></span>
           <span th:text="${patient.dateDeNaissance}"></span>
