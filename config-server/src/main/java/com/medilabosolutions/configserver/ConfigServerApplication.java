@@ -1,4 +1,4 @@
-package com.medilabo.configserver;
+package com.medilabosolutions.configserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

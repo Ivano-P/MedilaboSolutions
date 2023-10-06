@@ -1,10 +1,10 @@
-package com.medilabo.configserver;
+package com.medilabosolutions.zuulserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigServerApplicationTests {
+class ZuulServerApplicationTests {
 
 	@Test
 	void contextLoads() {
