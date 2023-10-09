@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class PatientDTO {
+public class PatientForSelectionDTO {
 
 
     @NotEmpty(message ="Le prénom est obligatoire")

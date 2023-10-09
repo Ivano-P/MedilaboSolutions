@@ -1,4 +1,4 @@
-package com.medilabosolutions.msfrontend.beans;
+package com.medilabosolutions.msfrontend.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class PatientDtoBean {
+public class PatientForSelectionDTO {
 
     String prenom;
 

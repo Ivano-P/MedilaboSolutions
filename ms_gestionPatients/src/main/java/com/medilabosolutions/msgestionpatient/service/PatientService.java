@@ -1,8 +1,10 @@
 package com.medilabosolutions.msgestionpatient.service;
 
-import com.medilabosolutions.msgestionpatient.dto.PatientDTO;
+import com.medilabosolutions.msgestionpatient.dto.PatientForSelectionDTO;
 import com.medilabosolutions.msgestionpatient.model.Patient;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface PatientService {
@@ -15,5 +17,7 @@ public interface PatientService {
      */
     List<Patient> findAllPatients();
 
-    List<PatientDTO> convertPatientsToPatientsDTO(List<Patient> allPatients);
+    List<PatientForSelectionDTO> convertPatientsToPatientsDTO(List<Patient> allPatients);
+
+    Patient findPatientInfo(String prenom, String nom, LocalDate ddn);
 }
