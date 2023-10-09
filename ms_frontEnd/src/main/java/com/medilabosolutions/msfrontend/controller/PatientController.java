@@ -1,6 +1,9 @@
 package com.medilabosolutions.msfrontend.controller;
 
 import com.medilabosolutions.msfrontend.beans.PatientDtoBean;
+import com.medilabosolutions.msfrontend.proxies.MsGestionPatientProxy;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,21 +12,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PatientController {
+
+    private final MsGestionPatientProxy msGestionPatientProxy;
 
     @GetMapping("/patients")
     public  String listPatients(Model model){
-        //Mock Patient
-        PatientDtoBean patientDto = new PatientDtoBean("ivano", "petty",
-                LocalDate.of(2001, 01, 01));
 
-        PatientDtoBean patientDto2 = new PatientDtoBean("meryl", "cavil",
-                LocalDate.of(2001, 01, 01));
-
-        PatientDtoBean patientDto3 = new PatientDtoBean("aaron", "petty",
-                LocalDate.of(2001, 01, 01));
-
-       List<PatientDtoBean> patients = List.of(patientDto, patientDto2, patientDto3);
+       List<PatientDtoBean> patients = msGestionPatientProxy.listOfPatients();
        model.addAttribute("patients", patients);
 
         return "/patients";
