@@ -17,6 +17,11 @@ public class PatientController {
 
     private final MsGestionPatientProxy msGestionPatientProxy;
 
+    @GetMapping("/")
+    public String goToHomePage(){
+        return "home";
+    }
+
     @GetMapping("/patients")
     public  String listPatients(Model model){
 

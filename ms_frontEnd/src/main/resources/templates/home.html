@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+<div class="patients-list">
+    <h1>Bienvenue sur Medilabo Solutions</h1>
+    <a th:href="@{'/patients'}">
+        <div class="lop-button">
+            <span th:text="'Se connecter'"></span>
+        </div>
+    </a>
+</div>
+</body>
+</html>
