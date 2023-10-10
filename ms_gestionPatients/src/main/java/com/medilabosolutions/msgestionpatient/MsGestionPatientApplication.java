@@ -14,22 +14,10 @@ import java.util.List;
 @Log4j2
 @SpringBootApplication
 @EnableDiscoveryClient
-public class MsGestionPatientApplication implements CommandLineRunner {
-
-	@Autowired
-	private PatientService patientService;
+public class MsGestionPatientApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(MsGestionPatientApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-		log.info("Start run!");
-
-		List<PatientForSelectionDTO> allPatients = patientService.convertPatientsToPatientsDTO(patientService.findAllPatients());
-		allPatients.forEach(log::info);
-
-		log.info("End run!");
-	}
 }

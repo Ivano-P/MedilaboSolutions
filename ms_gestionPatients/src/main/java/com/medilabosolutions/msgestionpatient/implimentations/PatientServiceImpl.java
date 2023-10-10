@@ -78,6 +78,8 @@ public class PatientServiceImpl implements PatientService {
         return patientRepository.findById(patientId).orElseThrow(PatientNotFoundExcetion::new);
     }
 
+
+
     /**
      * Updates the details of a patient in the database.
      *
@@ -85,20 +87,35 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public void updatePatient(PatientBean patientBean) {
+
         log.debug("updatePatient() called with: {}", patientBean);
-
-        //convert patientBean info Patient
-        Patient patient = new Patient(patientBean.getId(), patientBean.getPrenom(), patientBean.getNom(), patientBean
-                .getDateDeNaissance(), Genre.valueOf(patientBean.getGenre()), patientBean
-                .getAdressePostale(), patientBean.getNumeroDeTelephone());
-
-
+        Patient patient = convertPatientBeanToPatient(patientBean);
         Patient patientToUpdate = findPatientById(patient.getId());
 
         //copy all properties from `patient` to `patientToUpdate`
         BeanUtils.copyProperties(patient, patientToUpdate);
-
         patientRepository.save(patientToUpdate);
+    }
+
+    @Override
+    public void addPatient(PatientBean patientBean) {
+        log.debug("addPatient() called with: {}", patientBean);
+
+        Patient patient = new Patient();
+        patient.setPrenom(patientBean.getPrenom());
+        patient.setNom(patientBean.getNom());
+        patient.setDateDeNaissance(patientBean.getDateDeNaissance());
+        patient.setGenre(Genre.valueOf(patientBean.getGenre()));
+        patient.setAdressePostale(patientBean.getAdressePostale());
+        patient.setNumeroDeTelephone(patientBean.getNumeroDeTelephone());
+        patientRepository.insert(patient);
+    }
+
+    private Patient convertPatientBeanToPatient(PatientBean patientBean){
+
+        return new Patient(patientBean.getId(), patientBean.getPrenom(), patientBean.getNom(), patientBean
+                .getDateDeNaissance(), Genre.valueOf(patientBean.getGenre()), patientBean
+                .getAdressePostale(), patientBean.getNumeroDeTelephone());
     }
 
 }

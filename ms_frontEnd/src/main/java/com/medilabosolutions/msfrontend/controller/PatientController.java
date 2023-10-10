@@ -6,14 +6,11 @@ import com.medilabosolutions.msfrontend.service.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -51,22 +48,38 @@ public class PatientController {
         return "patientInfo";
     }
 
-    @GetMapping("/majinfo")
+    @GetMapping("/updateInfo")
     public String goToUpdatePatientInfoPage(Model model, @RequestParam("patientId") String patientId){
 
         log.debug("goToUpdatePatientInfoPage() called with {}, {}", model, patientId);
 
-        PatientBean patientDTO = patientService.findPatientById(patientId);
-        model.addAttribute("patient", patientDTO);
+        PatientBean patientBean = patientService.findPatientById(patientId);
+        model.addAttribute("patient", patientBean);
+        model.addAttribute("PatientBean" ,new PatientBean());
         return "updatePatientInfo";
     }
 
-    @PostMapping("/majInfoPatient")
-    public String updatePatientInfo(Model model, @ModelAttribute PatientBean patientDTO){
+    @PutMapping ("/updatePatient")
+    public String updatePatientInfo(Model model, @ModelAttribute PatientBean patientBean){
 
-        log.debug("updatePatientInfo() called with {}, {}", model, patientDTO);
-        patientService.updatePatient(patientDTO);
-        return "redirect:/informations?patientId=" + patientDTO.getId();
+        log.debug("updatePatientInfo() called with {}, {}", model, patientBean);
+        patientService.updatePatient(patientBean);
+        return "redirect:/informations?patientId=" + patientBean.getId();
+    }
+
+    @GetMapping("/addPatient")
+    public String goToAddPatientPage(Model model){
+        log.debug("addPatient() called with {}", model);
+        model.addAttribute("PatientBean" ,new PatientBean());
+        return "addPatientInfo";
+    }
+
+    @PostMapping("/addPatient")
+    public String addPatient(Model model, @ModelAttribute PatientBean patientBean){
+
+        log.debug("addPatient() called with {}, {}", model, patientBean);
+        patientService.addPatient(patientBean);
+        return "redirect:/patients";
     }
 
 }

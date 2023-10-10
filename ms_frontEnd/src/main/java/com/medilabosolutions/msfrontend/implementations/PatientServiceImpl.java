@@ -34,10 +34,16 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void updatePatient(PatientBean patientDTO) {
+    public void addPatient(PatientBean patientBean) {
+        log.debug("addPatientt() called with {} ", patientBean);
+        msGestionPatientProxy.addPatient(patientBean);
+    }
 
-        log.debug("updatePatient() called with {} ", patientDTO );
-        msGestionPatientProxy.updatePatient(patientDTO);
+    @Override
+    public void updatePatient(PatientBean patientBean) {
+
+        log.debug("updatePatient() called with {} ", patientBean);
+        msGestionPatientProxy.updatePatient(patientBean);
     }
 
 }

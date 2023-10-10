@@ -9,7 +9,9 @@ import java.util.List;
 public interface PatientService {
     List<PatientForSelectionBean> findAllPatients();
 
-    void updatePatient(PatientBean patientDTO);
+    void updatePatient(PatientBean patientBean);
 
     PatientBean findPatientById(String patientId);
+
+    void addPatient(PatientBean patientBean);
 }

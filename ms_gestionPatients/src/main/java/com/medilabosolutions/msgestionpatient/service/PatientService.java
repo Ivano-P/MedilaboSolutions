@@ -21,4 +21,6 @@ public interface PatientService {
     void updatePatient(PatientBean patientBean);
 
     Patient findPatientById(String patientId);
+
+    void addPatient(PatientBean patientBean);
 }

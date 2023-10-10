@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Ajout informations patient</title>
+  <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<div class="update-patient-info">
+  <h2>Ajout informations patient</h2>
+  <form action="#" th:action="@{/addPatient}" th:object="${PatientBean}" method="post">
+    <div class="input-group">
+      <label for="prenom">Prénom:</label>
+      <input type="text" id="prenom" name="prenom"  required>
+    </div>
+
+    <div class="input-group">
+      <label for="nom">Nom:</label>
+      <input type="text" id="nom" name="nom"  required>
+    </div>
+
+    <div class="input-group">
+      <label for="dateDeNaissance">Date de naissance:</label>
+      <input type="date" id="dateDeNaissance" name="dateDeNaissance"  required>
+      <!-- pattern="\d{4}-\d{2}-\d{2}"  title="Veuillez entrer une date au format aaaa-mm-jj" -->
+    </div>
+
+    <div class="input-group">
+      <label for="genre">Genre:</label>
+      <select id="genre" name="genre" required>
+        <option value="M">Homme</option>
+        <option value="F">Femme</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label for="adressePostale">Adresse postale:</label>
+      <input type="text" id="adressePostale" name="adressePostale">
+    </div>
+
+    <div class="input-group">
+      <label for="numeroDeTelephone">Numéro de téléphone:</label>
+      <input type="tel" id="numeroDeTelephone" name="numeroDeTelephone">
+    </div>
+
+    <div class="input-group">
+      <button type="submit">Ajout Patient</button>
+    </div>
+  </form>
+</div>
+</body>
+</html>

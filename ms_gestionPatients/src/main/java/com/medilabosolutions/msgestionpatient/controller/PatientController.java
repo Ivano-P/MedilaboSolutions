@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 
@@ -35,11 +34,18 @@ public class PatientController {
         return patientService.findPatientById(patientId);
     }
 
-    @PostMapping("/update")
+    @PutMapping ("/update")
     void updatePatient(@RequestBody PatientBean patientBean){
 
         log.debug("updatePatient() called with: {}", patientBean);
         patientService.updatePatient(patientBean);
+    }
+
+    @PostMapping ("/add")
+    void addPatient(@RequestBody PatientBean patientBean){
+
+        log.debug("addPatient() called with: {}", patientBean);
+        patientService.addPatient(patientBean);
     }
 
 
