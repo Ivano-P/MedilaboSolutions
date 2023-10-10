@@ -57,3 +57,8 @@ body {
 .detail-card p:last-child {
     margin-bottom: 0;
 }
+
+.error{
+    font-weight: bold;
+    color: red;
+}

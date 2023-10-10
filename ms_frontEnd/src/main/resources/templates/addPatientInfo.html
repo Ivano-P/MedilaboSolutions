@@ -8,21 +8,23 @@
 <body>
 <div class="update-patient-info">
   <h2>Ajout informations patient</h2>
-  <form action="#" th:action="@{/addPatient}" th:object="${PatientBean}" method="post">
+  <form th:action="@{/addPatient}" th:object="${patientBean}" method="post">
     <div class="input-group">
       <label for="prenom">Prénom:</label>
-      <input type="text" id="prenom" name="prenom"  required>
+      <input type="text" id="prenom" name="prenom" required>
+      <p th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="error"></p>
     </div>
 
     <div class="input-group">
       <label for="nom">Nom:</label>
       <input type="text" id="nom" name="nom"  required>
+      <p th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="error"></p>
     </div>
 
     <div class="input-group">
       <label for="dateDeNaissance">Date de naissance:</label>
-      <input type="date" id="dateDeNaissance" name="dateDeNaissance"  required>
-      <!-- pattern="\d{4}-\d{2}-\d{2}"  title="Veuillez entrer une date au format aaaa-mm-jj" -->
+      <input type="date" id="dateDeNaissance" name="dateDeNaissance"  required >
+      <p th:if="${#fields.hasErrors('dateDeNaissance')}" th:errors="*{dateDeNaissance}" class="error"></p>
     </div>
 
     <div class="input-group">
@@ -31,6 +33,7 @@
         <option value="M">Homme</option>
         <option value="F">Femme</option>
       </select>
+      <p th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="error"></p>
     </div>
 
     <div class="input-group">

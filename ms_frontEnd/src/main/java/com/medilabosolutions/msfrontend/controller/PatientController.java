@@ -3,12 +3,14 @@ package com.medilabosolutions.msfrontend.controller;
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
 import com.medilabosolutions.msfrontend.service.PatientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,30 +57,36 @@ public class PatientController {
 
         PatientBean patientBean = patientService.findPatientById(patientId);
         model.addAttribute("patient", patientBean);
-        model.addAttribute("PatientBean" ,new PatientBean());
+        model.addAttribute("patientBean" ,new PatientBean());
         return "updatePatientInfo";
     }
 
-    @PutMapping ("/updatePatient")
-    public String updatePatientInfo(Model model, @ModelAttribute PatientBean patientBean){
-
-        log.debug("updatePatientInfo() called with {}, {}", model, patientBean);
-        patientService.updatePatient(patientBean);
+    @PostMapping ("/updatePatient")
+    public String updatePatientInfo(Model model, @Valid @ModelAttribute PatientBean patientBean, BindingResult result){
+        log.debug("updatePatientInfo() called with {}, {}, {}", model, patientBean, result);
+        if(result.hasErrors()){
+            return "updatePatientInfo";
+        }else{
+            patientService.updatePatient(patientBean);
+        }
         return "redirect:/informations?patientId=" + patientBean.getId();
     }
 
     @GetMapping("/addPatient")
     public String goToAddPatientPage(Model model){
         log.debug("addPatient() called with {}", model);
-        model.addAttribute("PatientBean" ,new PatientBean());
+        model.addAttribute("patientBean" ,new PatientBean());
         return "addPatientInfo";
     }
 
     @PostMapping("/addPatient")
-    public String addPatient(Model model, @ModelAttribute PatientBean patientBean){
-
-        log.debug("addPatient() called with {}, {}", model, patientBean);
-        patientService.addPatient(patientBean);
+    public String addPatient(Model model, @Valid @ModelAttribute PatientBean patientBean, BindingResult result){
+        log.debug("addPatient() called with {}, {}, {}", model, patientBean, result);
+        if(result.hasErrors()){
+            return "addPatientInfo";
+        }else{
+            patientService.addPatient(patientBean);
+        }
         return "redirect:/patients";
     }
 

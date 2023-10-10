@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-
 @Document(collection = "patients")
 @Data
 @AllArgsConstructor
@@ -25,7 +23,7 @@ public class Patient {
     @NotEmpty(message ="Le nom est obligatoire")
     String nom;
 
-    @NotNull(message ="La date de naissance est obligatoire")
+    @NotEmpty(message ="La date de naissance est obligatoire")
     String dateDeNaissance;
 
     @NotNull(message ="Le genre est obligatoire")

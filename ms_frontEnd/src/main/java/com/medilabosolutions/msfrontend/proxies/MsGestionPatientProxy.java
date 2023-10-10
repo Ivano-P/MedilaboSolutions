@@ -17,7 +17,7 @@ public interface MsGestionPatientProxy {
     @GetMapping("/gestion/update")
     PatientBean getUpdatePage(@RequestParam("patientId") String patientId);
 
-    @PutMapping ("/gestion/update")
+    @PostMapping ("/gestion/update")
     void updatePatient(@RequestBody PatientBean patientBean);
 
     @PostMapping("/gestion/add")
