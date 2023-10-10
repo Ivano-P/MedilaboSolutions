@@ -1,15 +1,13 @@
-package com.medilabosolutions.msfrontend.DTO;
+package com.medilabosolutions.msfrontend.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PatientDTO {
+public class PatientBean {
 
     private String id;
 
@@ -17,7 +15,7 @@ public class PatientDTO {
 
     String nom;
 
-    LocalDate dateDeNaissance;
+    String dateDeNaissance;
 
     String genre;
 

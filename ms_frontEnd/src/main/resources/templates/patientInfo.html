@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+  <meta charset="UTF-8">
   <title>Détail du patient</title>
-  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="stylesheet" th:href="@{/styles.css}" />
 </head>
-<body class="dark-theme">
+<body>
 
 <div class="patient-details">
   <h2>Détails du patient</h2>
@@ -19,6 +20,8 @@
     <p><strong>Numéro de téléphone :</strong>
       <span th:text="${patient.numeroDeTelephone != null && !patient.numeroDeTelephone.isEmpty() ? patient.numeroDeTelephone : 'non renseigné'}"></span>
     </p>
+
+    <a th:href="@{'/majinfo?patientId=' + ${patient.id}}">Mettre a jour les informations</a>
   </div>
 </div>
 

@@ -11,8 +11,4 @@ import java.util.Optional;
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String> {
 
-    List<Patient> findByPrenomAndNom(String prenom, String Nom);
-    Optional<Patient> findByPrenomAndNomAndDateDeNaissance(String prenom, String nom, String dateDeNaissance);
-
-
 }

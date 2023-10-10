@@ -1,16 +1,15 @@
 package com.medilabosolutions.msgestionpatient.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 public class PatientForSelectionDTO {
 
+    @NotEmpty(message ="identifiant obligatoire")
+    private String id;
 
     @NotEmpty(message ="Le prénom est obligatoire")
     String prenom;
@@ -18,6 +17,6 @@ public class PatientForSelectionDTO {
     @NotEmpty(message ="Le nom est obligatoire")
     String nom;
 
-    @NotNull(message ="La date de naissance est obligatoire")
-    LocalDate dateDeNaissance;
+    @NotEmpty(message ="La date de naissance est obligatoire")
+    String dateDeNaissance;
 }

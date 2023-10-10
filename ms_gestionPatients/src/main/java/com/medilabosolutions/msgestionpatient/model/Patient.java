@@ -26,7 +26,7 @@ public class Patient {
     String nom;
 
     @NotNull(message ="La date de naissance est obligatoire")
-    LocalDate dateDeNaissance;
+    String dateDeNaissance;
 
     @NotNull(message ="Le genre est obligatoire")
     Genre genre;
