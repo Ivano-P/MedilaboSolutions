@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,14 +38,13 @@ public class PatientController {
     }
 
     @PostMapping ("/update")
-    void updatePatient(@RequestBody PatientBean patientBean){
-
+    void updatePatient(@Valid @RequestBody PatientBean patientBean){
         log.debug("updatePatient() called with: {}", patientBean);
         patientService.updatePatient(patientBean);
     }
 
     @PostMapping ("/add")
-    void addPatient(@RequestBody PatientBean patientBean){
+    void addPatient(@Valid @RequestBody PatientBean patientBean){
         log.debug("addPatient() called with: {}", patientBean);
         patientService.addPatient(patientBean);
     }
