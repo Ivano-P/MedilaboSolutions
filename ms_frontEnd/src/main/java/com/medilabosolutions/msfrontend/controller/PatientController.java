@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+/**
+ * Controller responsible for handling patient-related web requests.
+ * Provides endpoints for listing patients, viewing patient details, updating and adding patients.
+ *
+ * @author Ivano
+ */
 @Log4j2
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @Controller
@@ -23,6 +29,11 @@ public class PatientController {
 
     private final PatientService patientService;
 
+    /**
+     * Redirects to the home page.
+     *
+     * @return The name of the home view.
+     */
     @GetMapping("/")
     public String goToHomePage(){
         log.debug("goToHomePage() called ");
@@ -30,6 +41,12 @@ public class PatientController {
         return "home";
     }
 
+    /**
+     * Lists all patients.
+     *
+     * @param model The model to which the list of patients will be added.
+     * @return The name of the patients view.
+     */
     @GetMapping("/patients")
     public String listPatients(Model model){
         log.debug("listPatients() called with: {} ", model);
@@ -40,6 +57,14 @@ public class PatientController {
         return "/patients";
     }
 
+
+    /**
+     * Displays information for a specific patient.
+     *
+     * @param model The model to which the patient details will be added.
+     * @param patientId The ID of the patient whose details are to be displayed.
+     * @return The name of the patient information view.
+     */
     @GetMapping("/informations")
     public String patientInformation(Model model,
                                      @RequestParam("patientId") String patientId){
@@ -50,6 +75,13 @@ public class PatientController {
         return "patientInfo";
     }
 
+    /**
+     * Update personal information for a specific patient.
+     *
+     * @param model The model to which the patient details will be added.
+     * @param patientId The ID of the patient whose details are to be displayed.
+     * @return The page with update form for patient
+     */
     @GetMapping("/updateInfo")
     public String goToUpdatePatientInfoPage(Model model, @RequestParam("patientId") String patientId){
 
@@ -61,6 +93,15 @@ public class PatientController {
         return "updatePatientInfo";
     }
 
+
+    /**
+     * Update personal information for a specific patient.
+     *
+     * @param model The model to which the patient details will be added.
+     * @param patientBean The object containing patient info for update
+     * @param result a {@link BindingResult} used to apply validation on form fields and display error message
+     * @return The name of the patient information view or the current updatePatient view if validation isn't passed
+     */
     @PostMapping ("/updatePatient")
     public String updatePatientInfo(Model model, @Valid @ModelAttribute PatientBean patientBean, BindingResult result){
         log.debug("updatePatientInfo() called with {}, {}, {}", model, patientBean, result);
@@ -72,6 +113,12 @@ public class PatientController {
         return "redirect:/informations?patientId=" + patientBean.getId();
     }
 
+    /**
+     * Add a new patient.
+     *
+     * @param model The model to which the patient details will be added.
+     * @return The page with form to add personal information for new patient
+     */
     @GetMapping("/addPatient")
     public String goToAddPatientPage(Model model){
         log.debug("addPatient() called with {}", model);
@@ -79,6 +126,14 @@ public class PatientController {
         return "addPatientInfo";
     }
 
+    /**
+     * Add new patient by submitting their personal information
+     *
+     * @param model The model to which the patient details will be added.
+     * @param patientBean The object containing patient info for update
+     * @param result a {@link BindingResult} used to apply validation on form fields and display error message
+     * @return The list of patients view or the current add patient view if validation isn't passed
+     */
     @PostMapping("/addPatient")
     public String addPatient(Model model, @Valid @ModelAttribute PatientBean patientBean, BindingResult result){
         log.debug("addPatient() called with {}, {}, {}", model, patientBean, result);
