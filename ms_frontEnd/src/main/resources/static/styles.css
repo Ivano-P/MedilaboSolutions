@@ -58,7 +58,30 @@ body {
     margin-bottom: 0;
 }
 
+.input-group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .error{
     font-weight: bold;
     color: red;
+}
+
+.button-style {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333; /* Dark gray background */
+    color: #fff; /* White text color */
+    text-align: center;
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* Removes the default underline */
+    font-weight: bold; /* Makes text bold */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.button-style:hover {
+    background-color: #555; /* Slightly lighter gray when hovered */
+    cursor: pointer;
 }

@@ -7,6 +7,7 @@
 <body>
 
 <div class="patients-list">
+  <a class="button-style" th:href="@{'/'}">Retour</a>
   <h2>Liste des patients</h2>
   <ul>
     <li th:each="patient : ${patients}">
@@ -19,7 +20,7 @@
       </a>
     </li>
   </ul>
-  <a th:href="@{'/addPatient'}">Ajouter un patient</a>
+  <a class="button-style" th:href="@{'/addPatient'}">Ajouter un patient</a>
 </div>
 
 </body>

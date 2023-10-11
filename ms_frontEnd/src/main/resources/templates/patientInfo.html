@@ -8,6 +8,7 @@
 <body>
 
 <div class="patient-details">
+  <a class="button-style" th:href="@{'/patients'}">Retour</a>
   <h2>Détails du patient</h2>
   <div class="detail-card">
     <p><strong>Prénom :</strong> <span th:text="${patient.prenom}"></span></p>
@@ -21,7 +22,7 @@
       <span th:text="${patient.numeroDeTelephone != null && !patient.numeroDeTelephone.isEmpty() ? patient.numeroDeTelephone : 'non renseigné'}"></span>
     </p>
 
-    <a th:href="@{'/updateInfo?patientId=' + ${patient.id}}">Mettre a jour les informations</a>
+    <a class="button-style" th:href="@{'/updateInfo?patientId=' + ${patient.id}}">Mettre a jour les informations</a>
   </div>
 </div>
 

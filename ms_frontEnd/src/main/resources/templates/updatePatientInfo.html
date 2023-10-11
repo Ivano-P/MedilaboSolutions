@@ -6,7 +6,8 @@
     <link rel="stylesheet" th:href="@{/styles.css}" />
 </head>
 <body>
-<div class="update-patient-info">
+<div class="patient-details">
+    <a class="button-style" th:href="@{'/patients'}">Retour</a>
     <h2>Mise à jour des informations du patient</h2>
     <form action="#" th:action="@{/updatePatient}" th:object="${patientBean}" method="post">
         <div class="input-group">
@@ -54,7 +55,7 @@
         </div>
 
         <div class="input-group">
-            <button type="submit">Mise à jour</button>
+            <button class="button-style" type="submit">Mise à jour</button>
         </div>
     </form>
 </div>
