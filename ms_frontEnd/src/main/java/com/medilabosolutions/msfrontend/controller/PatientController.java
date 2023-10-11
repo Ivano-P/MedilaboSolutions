@@ -54,7 +54,7 @@ public class PatientController {
        List<PatientForSelectionBean> patients = patientService.findAllPatients();
        model.addAttribute("patients", patients);
 
-        return "/patients";
+        return "patientsList";
     }
 
 
