@@ -29,20 +29,20 @@ public class PatientController {
     }
 
     @GetMapping("/update")
-    Patient getUpdatePage(@RequestParam("patientId") String patientId){
+    public Patient getUpdatePage(@RequestParam("patientId") String patientId){
 
         log.debug("getUpdatePage() called with: {}", patientId);
         return patientService.findPatientById(patientId);
     }
 
     @PostMapping ("/update")
-    void updatePatient(@Valid @RequestBody PatientBean patientBean){
+    public void updatePatient(@Valid @RequestBody PatientBean patientBean){
         log.debug("updatePatient() called with: {}", patientBean);
         patientService.updatePatient(patientBean);
     }
 
     @PostMapping ("/add")
-    void addPatient(@Valid @RequestBody PatientBean patientBean){
+    public void addPatient(@Valid @RequestBody PatientBean patientBean){
         log.debug("addPatient() called with: {}", patientBean);
         patientService.addPatient(patientBean);
     }
