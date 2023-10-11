@@ -22,9 +22,4 @@ public class MsGestionPatientApplication{
 		SpringApplication.run(MsGestionPatientApplication.class, args);
 	}
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 }
