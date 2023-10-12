@@ -1,5 +1,6 @@
 package com.medilabosolutions.msgestionhistorique.implimentations;
 
+import com.medilabosolutions.msgestionhistorique.exception.PatientNoteNotFoundException;
 import com.medilabosolutions.msgestionhistorique.model.PatientNotes;
 import com.medilabosolutions.msgestionhistorique.repository.PatientNotesRepositoy;
 import com.medilabosolutions.msgestionhistorique.service.PatientNotesService;
@@ -22,6 +23,33 @@ public class PatientNotesServiceImpl implements PatientNotesService {
 
     @Override
     public List<PatientNotes> findAllPatientNotes() {
+        log.debug("findAllPatientNotes() called");
         return patientNotesRepositoy.findAll();
     }
+
+    @Override
+    public PatientNotes findPatientNotesById(String patientId) {
+        log.debug("findPatientNotesById() called with {}", patientId);
+        return patientNotesRepositoy.findById(patientId).orElseThrow(PatientNoteNotFoundException::new);
+    }
+
+    @Override
+    public PatientNotes findPatientNotesByPatientName(String patientName) {
+        log.debug("findPatientNotesByPatientName() called with {}", patientName);
+        return patientNotesRepositoy.findPatientNotesByPatient(patientName)
+                .orElseThrow(PatientNoteNotFoundException::new);
+    }
+
+    @Override
+    public void updatePatientNotesById(String patientId, String note) {
+        log.debug("addNoteToPatientById() called with {}, {}", patientId, note);
+
+        //find patient
+        PatientNotes patientNotesToUpdate = findPatientNotesById(patientId);
+        //add note to list of patient notes
+        patientNotesToUpdate.getNote().add(note);
+        //save note
+        patientNotesRepositoy.save(patientNotesToUpdate);
+    }
+
 }

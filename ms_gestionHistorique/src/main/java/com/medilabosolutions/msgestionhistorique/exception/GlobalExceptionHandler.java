@@ -1,4 +1,4 @@
-package com.medilabosolutions.msgestionpatient.exceptions;
+package com.medilabosolutions.msgestionhistorique.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(PatientNotFoundExcetion.class)
-    public ResponseEntity<String> handlePatientNotFoundException(PatientNotFoundExcetion pnfe) {
-        return new ResponseEntity<>(pnfe.getMessage(), HttpStatus.NOT_FOUND);
+    @ExceptionHandler(PatientNoteNotFoundException.class)
+    public ResponseEntity<String> handlePatientNoteNotFoundException(PatientNoteNotFoundException pnnfe) {
+        return new ResponseEntity<>(pnnfe.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

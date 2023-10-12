@@ -8,4 +8,9 @@ public interface PatientNotesService {
 
     List<PatientNotes> findAllPatientNotes();
 
+    PatientNotes findPatientNotesById(String patientId);
+
+    PatientNotes findPatientNotesByPatientName(String patientName);
+
+    void updatePatientNotesById(String patientId, String note);
 }
