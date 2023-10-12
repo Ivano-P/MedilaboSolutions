@@ -28,7 +28,7 @@ public class PatientNotesController {
         return patientNotesService.findPatientNotesById(patientId);
     }
 
-    @GetMapping("/noteByPatient")
+    @GetMapping("/noteByName")
     public PatientNotes findPatientNoteByPatientName(@RequestParam String patientName){
         log.debug("ggetPatientNoteByPatientName() called with {}", patientName);
         return patientNotesService.findPatientNotesByPatientName(patientName);
