@@ -2,12 +2,13 @@ package com.medilabosolutions.msfrontend.controller;
 
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
+import com.medilabosolutions.msfrontend.beans.PatientNotesBean;
+import com.medilabosolutions.msfrontend.service.NotesService;
 import com.medilabosolutions.msfrontend.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientService patientService;
+    private final NotesService notesService;
 
     /**
      * Redirects to the home page.
@@ -58,22 +60,30 @@ public class PatientController {
     }
 
 
+
     /**
-     * Displays information for a specific patient.
+     * Displays information and note history for a specific patient.
      *
      * @param model The model to which the patient details will be added.
      * @param patientId The ID of the patient whose details are to be displayed.
-     * @return The name of the patient information view.
+     * @return The notesHistory view.
      */
     @GetMapping("/informations")
-    public String patientInformation(Model model,
+    public String patientNoteHistory(Model model,
                                      @RequestParam("patientId") String patientId){
 
-        log.debug("patientInformation() called with {}, {} ", model, patientId);
+        log.debug("patientNoteHistory() called with {}, {} ", model, patientId);
+
         PatientBean chosenPatient = patientService.findPatientById(patientId);
+        PatientNotesBean patientNotes = notesService.findPatientNotesByName(chosenPatient.getNom());
+
         model.addAttribute("patient", chosenPatient);
-        return "patientInfo";
+        model.addAttribute("patientNotes", patientNotes);
+        return "patientInfo2";
     }
+
+
+
 
     /**
      * Update personal information for a specific patient.
@@ -143,6 +153,18 @@ public class PatientController {
             patientService.addPatient(patientBean);
         }
         return "redirect:/patients";
+    }
+
+
+
+
+    @PostMapping("/updateHistory")
+    public String updateNoteHistory(@ModelAttribute("patientId") String patientId,
+                                    @ModelAttribute("note") String note){
+
+        log.debug("updateNoteHistory() called with {}, {} ", patientId, note);
+        notesService.updatePatientNote(patientId, note);
+        return "redirect:/informations?patientId=" + patientId;
     }
 
 }

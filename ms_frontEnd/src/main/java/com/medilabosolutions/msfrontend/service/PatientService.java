@@ -44,4 +44,5 @@ public interface PatientService {
      * @param patientBean The details of the patient to be added.
      */
     void addPatient(PatientBean patientBean);
+
 }

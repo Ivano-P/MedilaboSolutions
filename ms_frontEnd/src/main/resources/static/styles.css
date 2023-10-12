@@ -32,7 +32,9 @@ body {
 }
 
 .patient-card span:last-child {
+
     margin-bottom: 0;
+
 }
 
 
@@ -48,6 +50,7 @@ body {
     background-color: #d4d4d4;
     padding: 15px;
     border-radius: 5px;
+    margin-bottom:10px;
 }
 
 .detail-card p {
@@ -85,3 +88,42 @@ body {
     background-color: #555; /* Slightly lighter gray when hovered */
     cursor: pointer;
 }
+
+.note_history{
+    background-color: white;
+    border-radius: 5px;
+    margin:10px;
+    min-height: 20px;
+    height: inherit;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.input-group textarea{
+    width: 560px;
+    overflow-y: auto;
+}
+
+#updateHistoryDiv label, #updateHistoryDiv textarea{
+    display:block;
+}
+
+#updateHistoryDiv label{
+    font-weight: bold;
+    margin-top: 20px;
+}
+.notes{
+    background-color: rgba(236, 236, 236, 80%);
+    margin: 10px;
+    border-radius: 5px;
+    padding-bottom: 5px;
+}
+
+.notes p {
+    white-space: pre-line;
+}
+
+.note_history li {
+    list-style-type:square;
+}
+

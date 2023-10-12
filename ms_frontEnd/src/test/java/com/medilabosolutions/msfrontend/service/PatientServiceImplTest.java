@@ -3,7 +3,7 @@ package com.medilabosolutions.msfrontend.service;
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
 import com.medilabosolutions.msfrontend.implementations.PatientServiceImpl;
-import com.medilabosolutions.msfrontend.proxies.MsGestionPatientProxy;
+import com.medilabosolutions.msfrontend.proxies.MsGatewayProxy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +25,7 @@ class PatientServiceImplTest {
     PatientServiceImpl patientService;
 
     @Mock
-    MsGestionPatientProxy msGestionPatientProxy;
+    MsGatewayProxy msGestionPatientProxy;
 
     private PatientBean mockPatient;
 

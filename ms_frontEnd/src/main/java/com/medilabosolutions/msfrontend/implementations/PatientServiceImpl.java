@@ -2,7 +2,7 @@ package com.medilabosolutions.msfrontend.implementations;
 
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
-import com.medilabosolutions.msfrontend.proxies.MsGestionPatientProxy;
+import com.medilabosolutions.msfrontend.proxies.MsGatewayProxy;
 import com.medilabosolutions.msfrontend.service.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class PatientServiceImpl implements PatientService {
 
-    private final MsGestionPatientProxy msGestionPatientProxy;
+    private final MsGatewayProxy msGatewayProxy;
 
     /**
      * Retrieves a list of all patients for selection.
@@ -33,7 +33,7 @@ public class PatientServiceImpl implements PatientService {
     public List<PatientForSelectionBean> findAllPatients(){
 
         log.debug("findAllPatients() called");
-        return msGestionPatientProxy.listOfPatients();
+        return msGatewayProxy.listOfPatients();
     }
 
 
@@ -46,7 +46,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientBean findPatientById(String patientId) {
         log.debug("findPatientById() called with {} ", patientId );
-        return msGestionPatientProxy.getUpdatePage(patientId);
+        return msGatewayProxy.getUpdatePage(patientId);
     }
 
     /**
@@ -57,7 +57,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public void addPatient(PatientBean patientBean) {
         log.debug("addPatientt() called with {} ", patientBean);
-        msGestionPatientProxy.addPatient(patientBean);
+        msGatewayProxy.addPatient(patientBean);
     }
 
     /**
@@ -69,7 +69,7 @@ public class PatientServiceImpl implements PatientService {
     public void updatePatient(PatientBean patientBean) {
 
         log.debug("updatePatient() called with {} ", patientBean);
-        msGestionPatientProxy.updatePatient(patientBean);
+        msGatewayProxy.updatePatient(patientBean);
     }
 
 }

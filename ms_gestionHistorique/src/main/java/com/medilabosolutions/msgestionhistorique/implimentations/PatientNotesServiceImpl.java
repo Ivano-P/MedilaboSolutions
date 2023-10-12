@@ -34,9 +34,9 @@ public class PatientNotesServiceImpl implements PatientNotesService {
     }
 
     @Override
-    public PatientNotes findPatientNotesByPatientName(String patientName) {
-        log.debug("findPatientNotesByPatientName() called with {}", patientName);
-        return patientNotesRepositoy.findPatientNotesByPatient(patientName)
+    public PatientNotes findPatientNotesByPatientName(String patient) {
+        log.debug("findPatientNotesByPatientName() called with {}", patient);
+        return patientNotesRepositoy.findByPatient(patient)
                 .orElseThrow(PatientNoteNotFoundException::new);
     }
 

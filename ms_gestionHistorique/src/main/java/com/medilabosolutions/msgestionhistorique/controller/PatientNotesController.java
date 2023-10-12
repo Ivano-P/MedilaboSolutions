@@ -30,7 +30,7 @@ public class PatientNotesController {
 
     @GetMapping("/noteByName")
     public PatientNotes findPatientNoteByPatientName(@RequestParam String patientName){
-        log.debug("ggetPatientNoteByPatientName() called with {}", patientName);
+        log.debug("findPatientNoteByPatientName() called with {}", patientName);
         return patientNotesService.findPatientNotesByPatientName(patientName);
     }
 
@@ -39,4 +39,5 @@ public class PatientNotesController {
         log.debug("addNoteToPatientNotesById called with {}, {}", patientId, note);
         patientNotesService.updatePatientNotesById(patientId, note);
     }
+
 }

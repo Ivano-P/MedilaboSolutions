@@ -2,19 +2,20 @@ package com.medilabosolutions.msfrontend.proxies;
 
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
+import com.medilabosolutions.msfrontend.beans.PatientNotesBean;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * Proxy interface for interacting with the MsGestionPatient service through the MsGateway.
- * This interface defines the contract for communication with the MsGestionPatient service.
+ * Proxy interface for interacting with backend microservices through the MsGateway.
+ * This interface defines the contract for communication with the MsGateway microservice.
  *
  * @author Ivano
  */
-@FeignClient(name="MsGateway", url = "localhost:9103")
-public interface MsGestionPatientProxy {
+@FeignClient(name="sGestionPatientProxy", url = "localhost:9103")
+public interface MsGatewayProxy {
 
     /**
      * Retrieves a list of patients for selection.
@@ -48,5 +49,15 @@ public interface MsGestionPatientProxy {
      */
     @PostMapping("/gestion/add")
     void addPatient(@RequestBody PatientBean patientBean);
+
+
+    @GetMapping("/historique/noteById")
+    PatientNotesBean findPatientNoteById(@RequestParam String patientId);
+
+    @GetMapping("/historique/noteByName")
+    PatientNotesBean findPatientNoteByPatientName(@RequestParam String patientName);
+
+    @PostMapping("/historique/updateNotes")
+    void updatePatientNotesById(@RequestParam String patientId, @RequestParam String note);
 
 }
