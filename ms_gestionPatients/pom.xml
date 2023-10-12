@@ -76,7 +76,6 @@
             <version>0.8.8</version>
         </dependency>
 
-        <!--ajout de la validation des donnees-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
