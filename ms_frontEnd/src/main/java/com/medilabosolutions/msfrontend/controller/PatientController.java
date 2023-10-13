@@ -69,8 +69,8 @@ public class PatientController {
      * @return The notesHistory view.
      */
     @GetMapping("/informations")
-    public String patientNoteHistory(Model model,
-                                     @RequestParam("patientId") String patientId){
+    public String patientInfoAndNotes(Model model,
+                                      @RequestParam("patientId") String patientId){
 
         log.debug("patientNoteHistory() called with {}, {} ", model, patientId);
 
