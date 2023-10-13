@@ -1,4 +1,4 @@
-package com.medilabosolutions.controller;
+package com.medilabosolutions.msgestionpatient.controller;
 
 import com.medilabosolutions.msgestionpatient.beans.PatientBean;
 import com.medilabosolutions.msgestionpatient.controller.PatientController;

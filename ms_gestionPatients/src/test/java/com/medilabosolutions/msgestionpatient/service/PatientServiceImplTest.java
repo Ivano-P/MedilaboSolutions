@@ -1,4 +1,4 @@
-package com.medilabosolutions.service;
+package com.medilabosolutions.msgestionpatient.service;
 
 import com.medilabosolutions.msgestionpatient.beans.PatientBean;
 import com.medilabosolutions.msgestionpatient.dto.PatientForSelectionDTO;
