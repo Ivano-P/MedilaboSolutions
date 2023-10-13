@@ -155,9 +155,13 @@ public class PatientController {
         return "redirect:/patients";
     }
 
-
-
-
+    /**
+     * Updates the note history for a specific patient.
+     *
+     * @param patientId The ID of the patient whose note history is to be updated.
+     * @param note The new note to be added to the patient's note history.
+     * @return Redirects to the patient's information page.
+     */
     @PostMapping("/updateHistory")
     public String updateNoteHistory(@ModelAttribute("patientId") String patientId,
                                     @ModelAttribute("note") String note){

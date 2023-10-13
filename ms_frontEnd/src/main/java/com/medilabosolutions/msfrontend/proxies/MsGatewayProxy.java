@@ -51,12 +51,30 @@ public interface MsGatewayProxy {
     void addPatient(@RequestBody PatientBean patientBean);
 
 
+    /**
+     * Retrieves a patient's notes using the patient's ID.
+     *
+     * @param patientId The ID of the patient whose notes are to be retrieved.
+     * @return {@link PatientNotesBean} containing the patient's notes.
+     */
     @GetMapping("/historique/noteById")
     PatientNotesBean findPatientNoteById(@RequestParam String patientId);
 
+    /**
+     * Retrieves a patient's notes using the patient's name.
+     *
+     * @param patientName The name of the patient whose notes are to be retrieved.
+     * @return {@link PatientNotesBean} containing the patient's notes.
+     */
     @GetMapping("/historique/noteByName")
     PatientNotesBean findPatientNoteByPatientName(@RequestParam String patientName);
 
+    /**
+     * Updates the notes of a specific patient using the patient's ID.
+     *
+     * @param patientId The ID of the patient whose notes are to be updated.
+     * @param note The new note to be added to the patient's note history.
+     */
     @PostMapping("/historique/updateNotes")
     void updatePatientNotesById(@RequestParam String patientId, @RequestParam String note);
 

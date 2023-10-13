@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Implementation of the {@link PatientService} interface.
- * This service provides methods to interact with the MsGestionPatient service through the MsGateway.
+ * This service provides methods to interact with the MsGatewayProxy.
  *
  * @author Ivano
  */
