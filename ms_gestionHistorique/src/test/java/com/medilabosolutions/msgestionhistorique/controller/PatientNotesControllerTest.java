@@ -2,20 +2,21 @@ package com.medilabosolutions.msgestionhistorique.controller;
 
 import com.medilabosolutions.msgestionhistorique.model.PatientNotes;
 import com.medilabosolutions.msgestionhistorique.service.PatientNotesService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.mockito.Mockito.*;
-
-
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class PatientNotesControllerTest {
@@ -26,59 +27,68 @@ class PatientNotesControllerTest {
     @Mock
     PatientNotesService patientNotesService;
 
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(patientNotesController).build();
+    }
+
     @Test
-    void testGetAllPatientNotes() {
+    void testGetAllPatientNotes() throws Exception {
         // Arrange
         PatientNotes mockNote = new PatientNotes("1", "John", List.of("Note1", "Note2"));
         List<PatientNotes> mockNotesList = List.of(mockNote);
         when(patientNotesService.findAllPatientNotes()).thenReturn(mockNotesList);
 
-        // Act
-        List<PatientNotes> result = patientNotesController.getAllPatientNotes();
+        // Act & Assert
+        mockMvc.perform(get("/notes"))
+                .andExpect(status().isOk());
 
-        // Assert
-        assertThat(result).isEqualTo(mockNotesList);
         verify(patientNotesService, times(1)).findAllPatientNotes();
     }
 
     @Test
-    void testFindPatientNoteById() {
+    void testFindPatientNoteById() throws Exception {
         // Arrange
         PatientNotes mockNote = new PatientNotes("1", "John", List.of("Note1", "Note2"));
         when(patientNotesService.findPatientNotesById("1")).thenReturn(mockNote);
 
-        // Act
-        PatientNotes result = patientNotesController.findPatientNoteById("1");
+        // Act & Assert
+        mockMvc.perform(get("/noteById")
+                .param("patientId", mockNote.getId()))
+                .andExpect(status().isOk());
 
-        // Assert
-        assertThat(result).isEqualTo(mockNote);
         verify(patientNotesService, times(1)).findPatientNotesById("1");
     }
 
     @Test
-    void testFindPatientNoteByPatientName() {
+    void testFindPatientNoteByPatientName() throws Exception {
         // Arrange
         PatientNotes mockNote = new PatientNotes("1", "John", List.of("Note1", "Note2"));
         when(patientNotesService.findPatientNotesByPatientName("John")).thenReturn(mockNote);
 
-        // Act
-        PatientNotes result = patientNotesController.findPatientNoteByPatientName("John");
+        // Act & Assert
+        mockMvc.perform(get("/noteByName")
+                        .param("patientName", mockNote.getPatient()))
+                        .andExpect(status().isOk());
 
-        // Assert
-        assertThat(result).isEqualTo(mockNote);
         verify(patientNotesService, times(1)).findPatientNotesByPatientName("John");
     }
 
     @Test
-    void testUpdatePatientNotesById() {
+    void testUpdatePatientNotesById() throws Exception {
         // Arrange
+        String patientId = "1";
         String note = "New Note";
-        doNothing().when(patientNotesService).updatePatientNotesById("1", note);
+        doNothing().when(patientNotesService).updatePatientNotesById(patientId, note);
 
-        // Act
-        patientNotesController.updatePatientNotesById("1", note);
+        // Act & Assert
+        mockMvc.perform(post("/updateNotes")
+                        .param("patientId", patientId)
+                        .param("note", note))
+                .andExpect(status().isOk());
 
-        // Assert
-        verify(patientNotesService, times(1)).updatePatientNotesById("1", note);
+        verify(patientNotesService, times(1)).updatePatientNotesById(patientId, note);
     }
 }
