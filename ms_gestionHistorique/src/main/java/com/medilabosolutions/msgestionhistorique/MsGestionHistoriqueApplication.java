@@ -13,5 +13,4 @@ public class MsGestionHistoriqueApplication {
 		SpringApplication.run(MsGestionHistoriqueApplication.class, args);
 	}
 
-
 }
