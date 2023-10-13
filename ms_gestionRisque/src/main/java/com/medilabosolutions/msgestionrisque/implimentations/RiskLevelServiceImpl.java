@@ -2,8 +2,10 @@ package com.medilabosolutions.ms_gestionrisque.implimentations;
 
 import com.medilabosolutions.ms_gestionrisque.model.RiskLevel;
 import com.medilabosolutions.ms_gestionrisque.service.RiskLevelService;
+import com.medilabosolutions.ms_gestionrisque.service.TriggerTermService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,13 +20,42 @@ import java.util.List;
  */
 @Log4j2
 @Service
-public class RiskLevelImpl implements RiskLevelService {
+public class RiskLevelServiceImpl implements RiskLevelService {
+
+    private final TriggerTermService triggerTermService;
 
     /**
      * List of trigger terms used to determine the risk level.
      */
-    @Value("${trigger.terms}")
     private List<String> triggerTerms;
+
+
+    /**
+     * Constructor for the RiskLevelServiceImpl class.
+     * Initializes the TriggerTermService which provides the list of trigger terms.
+     *
+     * @param triggerTermService Service that provides the list of trigger terms.
+     */
+    @Autowired
+    public RiskLevelServiceImpl(TriggerTermService triggerTermService){
+        this.triggerTermService = triggerTermService;
+    }
+
+    //for test
+    public RiskLevelServiceImpl(TriggerTermService triggerTermService, List<String> triggerTerms){
+        this.triggerTerms = triggerTerms;
+        this.triggerTermService = triggerTermService;
+    }
+
+    /**
+     * Initializes the list of trigger terms after the bean is fully constructed.
+     * This method ensures that the trigger terms are loaded after the TriggerTermService has been injected.
+     */
+    @PostConstruct
+    public void init() {
+        triggerTerms = triggerTermService.getListOfTriggerTerms();
+    }
+
 
     /**
      * Determines the risk level of a patient based on their medical history, age, and gender.
@@ -125,10 +156,5 @@ public class RiskLevelImpl implements RiskLevelService {
         }
         return termsCount;
     }
-
-
-
-
-
 
 }

@@ -24,10 +24,10 @@ import static org.mockito.Mockito.*;
 class PatientServiceImplTest {
 
     @InjectMocks
-    PatientServiceImpl patientService;
+    private PatientServiceImpl patientService;
 
     @Mock
-    PatientRepository patientRepository;
+    private PatientRepository patientRepository;
 
     @Test
     void testFindAllPatients() {

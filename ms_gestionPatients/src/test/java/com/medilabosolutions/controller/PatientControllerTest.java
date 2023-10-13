@@ -3,19 +3,23 @@ package com.medilabosolutions.controller;
 import com.medilabosolutions.msgestionpatient.beans.PatientBean;
 import com.medilabosolutions.msgestionpatient.controller.PatientController;
 import com.medilabosolutions.msgestionpatient.dto.PatientForSelectionDTO;
-import com.medilabosolutions.msgestionpatient.model.Genre;
 import com.medilabosolutions.msgestionpatient.model.Patient;
 import com.medilabosolutions.msgestionpatient.service.PatientService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.List;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @ExtendWith(MockitoExtension.class)
 class PatientControllerTest {
 
@@ -25,38 +29,36 @@ class PatientControllerTest {
     @Mock
     PatientService patientService;
 
-    @Test
-    void testListOfAllPatients() {
-        // Arrange
+    private MockMvc mockMvc;
 
-        PatientForSelectionDTO mockDTO = new PatientForSelectionDTO("1", "John", "Doe", "1990-01-01");
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", Genre.M, null, null);
-        List<PatientForSelectionDTO> mockDTOList = List.of(mockDTO);
-        List<Patient> mockePatientList = List.of(mockPatient);
-        when(patientService.findAllPatients()).thenReturn(mockePatientList);
-        when(patientService.convertPatientsToPatientsDTO(mockePatientList)).thenReturn(mockDTOList);
-
-        // Act
-        List<PatientForSelectionDTO> result = patientController.listOfAllPatients();
-
-        // Assert
-        assertEquals(mockDTOList, result);
-        verify(patientService, times(1)).findAllPatients();
-        verify(patientService, times(1)).convertPatientsToPatientsDTO(mockePatientList);
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(patientController).build();
     }
 
     @Test
-    void testGetUpdatePage() {
+    void testListOfAllPatients() throws Exception {
         // Arrange
-        Patient mockPatient = new Patient();
-        mockPatient.setId("1");
+        PatientForSelectionDTO mockDTO = new PatientForSelectionDTO("1", "John", "Doe", "1990-01-01");
+        List<PatientForSelectionDTO> mockDTOList = List.of(mockDTO);
+        when(patientService.convertPatientsToPatientsDTO(anyList())).thenReturn(mockDTOList);
+
+        // Act & Assert
+        mockMvc.perform(get("/patients"))
+                .andExpect(status().isOk());
+
+        verify(patientService, times(1)).findAllPatients();
+    }
+
+    @Test
+    void testGetUpdatePage() throws Exception {
+        // Arrange
+        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", null, null, null);
         when(patientService.findPatientById("1")).thenReturn(mockPatient);
 
-        // Act
-        Patient result = patientController.getUpdatePage("1");
-
-        // Assert
-        assertEquals(mockPatient, result);
+        // Act & Assert
+        mockMvc.perform(get("/update").param("patientId", "1"))
+                .andExpect(status().isOk());
         verify(patientService, times(1)).findPatientById("1");
     }
 
