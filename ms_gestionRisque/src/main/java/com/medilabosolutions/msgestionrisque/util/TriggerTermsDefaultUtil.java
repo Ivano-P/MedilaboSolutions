@@ -1,4 +1,4 @@
-package com.medilabosolutions.ms_gestionrisque.util;
+package com.medilabosolutions.msgestionrisque.util;
 
 import java.util.Arrays;
 import java.util.List;

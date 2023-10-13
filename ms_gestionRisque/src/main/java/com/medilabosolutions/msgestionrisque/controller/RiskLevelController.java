@@ -1,6 +1,6 @@
-package com.medilabosolutions.ms_gestionrisque.controller;
+package com.medilabosolutions.msgestionrisque.controller;
 
-import com.medilabosolutions.ms_gestionrisque.service.RiskLevelService;
+import com.medilabosolutions.msgestionrisque.service.RiskLevelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

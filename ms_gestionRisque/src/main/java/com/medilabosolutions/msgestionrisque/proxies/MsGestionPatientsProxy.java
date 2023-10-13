@@ -1,5 +1,9 @@
 package com.medilabosolutions.msgestionrisque.proxies;
 
-//@FeignClient(name="MsGestionPatients", url = "localhost:9002")
-public interface MsGestionPatientProxy {
+import org.springframework.cloud.openfeign.FeignClient;
+
+@FeignClient(name="MsGestionPatients", url = "localhost:9002")
+public interface MsGestionPatientsProxy {
+
+
 }

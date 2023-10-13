@@ -1,4 +1,4 @@
-package com.medilabosolutions.ms_gestionrisque.model;
+package com.medilabosolutions.msgestionrisque.model;
 
 /**
  * Represents the various risk levels associated with a patient's health condition.

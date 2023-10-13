@@ -1,8 +1,8 @@
-package com.medilabosolutions.ms_gestionrisque.implimentations;
+package com.medilabosolutions.msgestionrisque.implimentations;
 
-import com.medilabosolutions.ms_gestionrisque.model.RiskLevel;
-import com.medilabosolutions.ms_gestionrisque.service.RiskLevelService;
-import com.medilabosolutions.ms_gestionrisque.service.TriggerTermService;
+import com.medilabosolutions.msgestionrisque.model.RiskLevel;
+import com.medilabosolutions.msgestionrisque.service.RiskLevelService;
+import com.medilabosolutions.msgestionrisque.service.TriggerTermService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;

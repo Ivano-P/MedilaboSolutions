@@ -1,4 +1,4 @@
-package com.medilabosolutions.ms_gestionrisque.service;
+package com.medilabosolutions.msgestionrisque.service;
 
 import java.time.LocalDate;
 import java.util.List;

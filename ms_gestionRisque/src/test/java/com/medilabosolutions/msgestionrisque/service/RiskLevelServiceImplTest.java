@@ -1,7 +1,7 @@
-package com.medilabosolutions.ms_gestionrisque.service;
+package com.medilabosolutions.msgestionrisque.service;
 
-import com.medilabosolutions.ms_gestionrisque.implimentations.RiskLevelServiceImpl;
-import com.medilabosolutions.ms_gestionrisque.model.RiskLevel;
+import com.medilabosolutions.msgestionrisque.implimentations.RiskLevelServiceImpl;
+import com.medilabosolutions.msgestionrisque.model.RiskLevel;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

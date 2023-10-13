@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Ivano
  */
-@FeignClient(name="sGestionPatientProxy", url = "localhost:9103")
+@FeignClient(name="MsGateWay", url = "localhost:9103")
 public interface MsGatewayProxy {
 
     /**

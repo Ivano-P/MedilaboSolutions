@@ -1,4 +1,4 @@
-package com.medilabosolutions.ms_gestionrisque;
+package com.medilabosolutions.msgestionrisque;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

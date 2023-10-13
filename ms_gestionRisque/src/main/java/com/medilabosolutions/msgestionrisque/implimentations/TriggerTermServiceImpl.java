@@ -1,7 +1,7 @@
-package com.medilabosolutions.ms_gestionrisque.implimentations;
+package com.medilabosolutions.msgestionrisque.implimentations;
 
-import com.medilabosolutions.ms_gestionrisque.service.TriggerTermService;
-import com.medilabosolutions.ms_gestionrisque.util.TriggerTermsDefaultUtil;
+import com.medilabosolutions.msgestionrisque.service.TriggerTermService;
+import com.medilabosolutions.msgestionrisque.util.TriggerTermsDefaultUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
