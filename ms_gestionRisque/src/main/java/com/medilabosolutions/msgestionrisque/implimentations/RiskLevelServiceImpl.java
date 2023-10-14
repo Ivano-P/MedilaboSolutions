@@ -1,14 +1,19 @@
 package com.medilabosolutions.msgestionrisque.implimentations;
 
+import com.medilabosolutions.msgestionrisque.beans.PatientBean;
 import com.medilabosolutions.msgestionrisque.model.RiskLevel;
+import com.medilabosolutions.msgestionrisque.proxies.MsGestionHistoriqueProxy;
+import com.medilabosolutions.msgestionrisque.proxies.MsGestionPatientsProxy;
 import com.medilabosolutions.msgestionrisque.service.RiskLevelService;
 import com.medilabosolutions.msgestionrisque.service.TriggerTermService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 /**
@@ -22,6 +27,9 @@ import java.util.List;
 @Service
 public class RiskLevelServiceImpl implements RiskLevelService {
 
+
+    private final MsGestionHistoriqueProxy msGestionHistoriqueProxy;
+    private final MsGestionPatientsProxy msGestionPatientsProxy;
     private final TriggerTermService triggerTermService;
 
     /**
@@ -34,18 +42,25 @@ public class RiskLevelServiceImpl implements RiskLevelService {
      * Constructor for the RiskLevelServiceImpl class.
      * Initializes the TriggerTermService which provides the list of trigger terms.
      *
-     * @param triggerTermService Service that provides the list of trigger terms.
+     * @param msGestionHistoriqueProxy
+     * @param msGestionPatientsProxy
+     * @param triggerTermService       Service that provides the list of trigger terms.
      */
     @Autowired
-    public RiskLevelServiceImpl(TriggerTermService triggerTermService){
+    public RiskLevelServiceImpl(MsGestionHistoriqueProxy msGestionHistoriqueProxy, MsGestionPatientsProxy msGestionPatientsProxy, TriggerTermService triggerTermService){
+        this.msGestionHistoriqueProxy = msGestionHistoriqueProxy;
+        this.msGestionPatientsProxy = msGestionPatientsProxy;
         this.triggerTermService = triggerTermService;
     }
 
     //for test
-    public RiskLevelServiceImpl(TriggerTermService triggerTermService, List<String> triggerTerms){
+    public RiskLevelServiceImpl(MsGestionHistoriqueProxy msGestionHistoriqueProxy, MsGestionPatientsProxy msGestionPatientsProxy, TriggerTermService triggerTermService, List<String> triggerTerms){
+        this.msGestionHistoriqueProxy = msGestionHistoriqueProxy;
+        this.msGestionPatientsProxy = msGestionPatientsProxy;
         this.triggerTerms = triggerTerms;
         this.triggerTermService = triggerTermService;
     }
+
 
     /**
      * Initializes the list of trigger terms after the bean is fully constructed.
@@ -58,6 +73,23 @@ public class RiskLevelServiceImpl implements RiskLevelService {
 
 
     /**
+     * gathers the information necessary to anticipate risk level and call's anticipateRisk() method with these values
+     *the value-anticipated risk level is then returned
+     *
+     * @param patientId unique identifier that represent the patient
+     * @return String representing the risk level.
+     */
+    @Override
+    public String getRiskLevel(int patientId) {
+        log.debug("getRiskLevel() called with {}", patientId);
+        List<String> personHistory = msGestionHistoriqueProxy.findPatientNoteById(String.valueOf(patientId)).getNote();
+        PatientBean patient = msGestionPatientsProxy.getPatientInfo(patientId);
+        String dateOfBirth = patient.getDateDeNaissance();
+        String gender = patient.getGenre();
+        return anticipateRisk(personHistory, dateOfBirth, gender);
+    }
+
+    /**
      * Determines the risk level of a patient based on their medical history, age, and gender.
      *
      * @param personHistory List of medical history notes for the patient.
@@ -67,36 +99,47 @@ public class RiskLevelServiceImpl implements RiskLevelService {
      */
     @Override
     public String anticipateRisk(List<String> personHistory, String dateOfBirth, String gender) {
+        log.debug("anticipateRisk() called with {}, {}, {}", personHistory, dateOfBirth, gender);
         //default level
         String riskLevel = RiskLevel.NONE.getDescription();
 
         int triggerTermOccurrences = countTermsOccurrences(triggerTerms, personHistory);
         int age = calculateAge(convertDobStringToLocalDate(dateOfBirth));
 
-        if (triggerTermOccurrences == 0) {
+
+        if (triggerTermOccurrences < 2) { //aucune ou un terme déclencheur cas pour un terme.
             return riskLevel; // None
-        } else if (triggerTermOccurrences >= 2 && triggerTermOccurrences <= 5 && age > 30) {  // borderline : patient contient entre deux et cinq déclencheurs et le patient est âgé de plus de 30 ans
-            riskLevel = RiskLevel.BORDERLINE.getDescription();
-        } else if (age < 30) {
-            if (gender.equalsIgnoreCase("M") && triggerTermOccurrences >= 3) {  //in danger : patient est un homme de moins de 30 ans, et a trois termes déclencheurs
-                riskLevel = RiskLevel.IN_DANGER.getDescription();
-            } else if (gender.equalsIgnoreCase("F") && triggerTermOccurrences >= 4) { //in danger : patient est une femme et a moins de 30 ans, il faudra quatre termes déclencheurs
-                riskLevel = RiskLevel.IN_DANGER.getDescription();
-            }
-            if (gender.equalsIgnoreCase("M") && triggerTermOccurrences >= 5) { // early onset : patient est un homme de moins de 30 ans, alors au moins cinq termes déclencheurs
-                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
-            } else if (gender.equalsIgnoreCase("F") && triggerTermOccurrences >= 7) { // early onset : patient est une femme et a moins de 30 ans, il faudra au moins sept termes déclencheurs
-                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
-            }
-        } else if (age > 30) {
-            if (triggerTermOccurrences >= 6 && triggerTermOccurrences <= 7) { // in danger : patient a plus de 30 ans, alors il en faudra six ou sept
-                riskLevel = RiskLevel.IN_DANGER.getDescription();
-            } else if (triggerTermOccurrences >= 8) { // patient a plus de 30 ans, alors il en faudra huit ou plus.
-                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
-            }
         }
 
+        if(age > 30) {//Patient plus de 30 ans
+            if(triggerTermOccurrences >= 2 && triggerTermOccurrences <= 5){ // borderline : patient contient entre deux et cinq déclencheurs et le patient est âgé de plus de 30 ans
+                riskLevel = RiskLevel.BORDERLINE.getDescription();
+            }else if(triggerTermOccurrences >= 6 && triggerTermOccurrences <= 7) { // in danger : patient a plus de 30 ans, alors il en faudra six ou sept
+                riskLevel = RiskLevel.IN_DANGER.getDescription();
+            } else if(triggerTermOccurrences >= 8) { // early onset : Si le patient a plus de 30 ans, alors il en faudra huit ou plus.
+                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
+            }
 
+        }else if(age < 30 && gender.equals("M")) {//homme moins de 30 ans
+            if(triggerTermOccurrences >= 3 && triggerTermOccurrences <= 4){ //in danger : patient est un homme de moins de 30 ans, et a trois termes déclencheurs
+                riskLevel = RiskLevel.IN_DANGER.getDescription();
+            } else if(triggerTermOccurrences >= 5){ // early onset : patient est un homme de moins de 30 ans, alors au moins cinq termes déclencheurs
+                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
+            }
+
+        }else if (age < 30 && gender.equals("F")){ //femme moins de 30 ans
+            if(triggerTermOccurrences >= 4 && triggerTermOccurrences <= 6){ //in danger : patient est une femme de moins de 30 ans, et a quatre termes déclencheurs
+                riskLevel = RiskLevel.IN_DANGER.getDescription();
+            }else if(triggerTermOccurrences >= 7){ // early onset : patient est une femme de moins de 30 ans, alors au moins sept termes déclencheurs
+                riskLevel = RiskLevel.EARLY_ONSET.getDescription();
+            }
+
+        }
+
+        log.debug( "trigger terms : " + triggerTermOccurrences);
+        log.debug("patient age :" + age);
+        log.debug("patient gender :" +gender);
+        log.debug("risk level :" +riskLevel);
         return riskLevel;
     }
 
@@ -109,6 +152,7 @@ public class RiskLevelServiceImpl implements RiskLevelService {
      */
     @Override
     public LocalDate convertDobStringToLocalDate(String dateOfBirth) {
+        log.debug("convertDobStringToLocalDate() called with {}", dateOfBirth);
         return LocalDate.parse(dateOfBirth);
     }
 
@@ -120,17 +164,10 @@ public class RiskLevelServiceImpl implements RiskLevelService {
      */
     @Override
     public int calculateAge(LocalDate dateOfBirth) {
+        log.debug("calculateAge() called with {}", dateOfBirth);
         LocalDate currentDate = LocalDate.now();
-        int age = currentDate.getYear() - dateOfBirth.getYear(); // Subtract the birth year from the current year
 
-        // If the birthday's month and day are after the current date's month and day, subtract 1 from the age
-        if (dateOfBirth.getMonthValue() > currentDate.getMonthValue() ||
-                (dateOfBirth.getMonthValue() == currentDate.getMonthValue() && dateOfBirth.getDayOfMonth() > currentDate
-                        .getDayOfMonth())) {
-            age--;
-        }
-
-        return age;
+        return Period.between(dateOfBirth, currentDate).getYears();
     }
 
     /**
@@ -142,6 +179,7 @@ public class RiskLevelServiceImpl implements RiskLevelService {
      */
     @Override
     public int countTermsOccurrences(List<String> triggerTerms, List<String> personHistory) {
+        log.debug("countTermsOccurrences() called with {}, {}", triggerTerms, personHistory);
         int termsCount = 0;
         for (String searchTerm : triggerTerms) {
             String lowerSearchTerm = searchTerm.toLowerCase();

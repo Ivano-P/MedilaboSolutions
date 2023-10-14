@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PatientBean {
 
-    private String id;
+    private int id;
 
     @NotEmpty(message ="Le prénom est obligatoire")
     String prenom;

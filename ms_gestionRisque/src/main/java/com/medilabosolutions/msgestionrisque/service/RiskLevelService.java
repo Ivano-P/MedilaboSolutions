@@ -11,6 +11,15 @@ import java.util.List;
  */
 public interface RiskLevelService {
 
+
+    /**
+     * Determines the risk level of a patient based on their medical history, age, and gender.
+     *their medical history, age, and gender are gathered using their patient id
+     * @param patientId unique id that represents the patient in the db
+     * @return String representing the risk level.
+     */
+    String getRiskLevel(int patientId);
+
     /**
      * Determines the risk level of a patient based on their medical history, age, and gender.
      *

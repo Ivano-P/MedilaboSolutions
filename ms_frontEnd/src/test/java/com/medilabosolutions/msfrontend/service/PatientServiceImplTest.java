@@ -31,13 +31,13 @@ class PatientServiceImplTest {
 
     @BeforeEach
     void setup(){
-        mockPatient = new PatientBean("1", "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
+        mockPatient = new PatientBean(1, "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
     }
 
     @Test
     void testFindAllPatients() {
         // Arrange
-        PatientForSelectionBean mockSimplifiedPatient = new PatientForSelectionBean("1", "John", "Doe", "1990-01-01");
+        PatientForSelectionBean mockSimplifiedPatient = new PatientForSelectionBean(1, "John", "Doe", "1990-01-01");
         List<PatientForSelectionBean> mockList = List.of(mockSimplifiedPatient);
         when(msGestionPatientProxy.listOfPatients()).thenReturn(mockList);
 
@@ -52,14 +52,14 @@ class PatientServiceImplTest {
     @Test
     void testFindPatientById() {
         // Arrange
-        when(msGestionPatientProxy.getUpdatePage("1")).thenReturn(mockPatient);
+        when(msGestionPatientProxy.getPatientInfo(1)).thenReturn(mockPatient);
 
         // Act
-        PatientBean result = patientService.findPatientById("1");
+        PatientBean result = patientService.findPatientById(1);
 
         // Assert
         assertEquals(mockPatient, result);
-        verify(msGestionPatientProxy, times(1)).getUpdatePage("1");
+        verify(msGestionPatientProxy, times(1)).getPatientInfo(1);
     }
 
     @Test

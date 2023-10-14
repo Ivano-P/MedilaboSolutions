@@ -17,10 +17,9 @@ public interface PatientService {
 
     List<PatientForSelectionDTO> convertPatientsToPatientsDTO(List<Patient> allPatients);
 
-
     void updatePatient(PatientBean patientBean);
 
-    Patient findPatientById(String patientId);
+    Patient findPatientById(int patientId);
 
-    void addPatient(PatientBean patientBean);
+    void addPatient(PatientBean patientBean) throws NoSuchFieldException;
 }

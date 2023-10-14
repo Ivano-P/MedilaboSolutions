@@ -9,7 +9,7 @@ import lombok.Data;
 public class PatientForSelectionDTO {
 
     @NotEmpty(message ="identifiant obligatoire")
-    private String id;
+    private int id;
 
     @NotEmpty(message ="Le prénom est obligatoire")
     String prenom;

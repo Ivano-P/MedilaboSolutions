@@ -5,6 +5,7 @@ import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
 import com.medilabosolutions.msfrontend.beans.PatientNotesBean;
 import com.medilabosolutions.msfrontend.service.NotesService;
 import com.medilabosolutions.msfrontend.service.PatientService;
+import com.medilabosolutions.msfrontend.service.RiskService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +31,7 @@ public class PatientController {
 
     private final PatientService patientService;
     private final NotesService notesService;
+    private final RiskService riskService;
 
     /**
      * Redirects to the home page.
@@ -70,16 +72,18 @@ public class PatientController {
      */
     @GetMapping("/informations")
     public String patientInfoAndNotes(Model model,
-                                      @RequestParam("patientId") String patientId){
+                                      @RequestParam("patientId") int patientId){
 
         log.debug("patientNoteHistory() called with {}, {} ", model, patientId);
 
         PatientBean chosenPatient = patientService.findPatientById(patientId);
         PatientNotesBean patientNotes = notesService.findPatientNotesByName(chosenPatient.getNom());
+        String patientRiskLevel = riskService.evaluatePatientRisk(patientId);
 
         model.addAttribute("patient", chosenPatient);
         model.addAttribute("patientNotes", patientNotes);
-        return "patientInfo2";
+        model.addAttribute("riskLevel", patientRiskLevel);
+        return "patientInfo";
     }
 
 
@@ -93,7 +97,7 @@ public class PatientController {
      * @return The page with update form for patient
      */
     @GetMapping("/updateInfo")
-    public String goToUpdatePatientInfoPage(Model model, @RequestParam("patientId") String patientId){
+    public String goToUpdatePatientInfoPage(Model model, @RequestParam("patientId") int patientId){
 
         log.debug("goToUpdatePatientInfoPage() called with {}, {}", model, patientId);
 
@@ -163,7 +167,7 @@ public class PatientController {
      * @return Redirects to the patient's information page.
      */
     @PostMapping("/updateHistory")
-    public String updateNoteHistory(@ModelAttribute("patientId") String patientId,
+    public String updateNoteHistory(@ModelAttribute("patientId") int patientId,
                                     @ModelAttribute("note") String note){
 
         log.debug("updateNoteHistory() called with {}, {} ", patientId, note);

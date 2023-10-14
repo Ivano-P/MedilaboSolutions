@@ -3,6 +3,7 @@ package com.medilabosolutions.msfrontend.implementations;
 import com.medilabosolutions.msfrontend.beans.PatientBean;
 import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
 import com.medilabosolutions.msfrontend.proxies.MsGatewayProxy;
+import com.medilabosolutions.msfrontend.service.NotesService;
 import com.medilabosolutions.msfrontend.service.PatientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -44,9 +45,9 @@ public class PatientServiceImpl implements PatientService {
      * @return {@link PatientBean} containing the patient's details.
      */
     @Override
-    public PatientBean findPatientById(String patientId) {
+    public PatientBean findPatientById(int patientId) {
         log.debug("findPatientById() called with {} ", patientId );
-        return msGatewayProxy.getUpdatePage(patientId);
+        return msGatewayProxy.getPatientInfo(patientId);
     }
 
     /**
@@ -59,6 +60,8 @@ public class PatientServiceImpl implements PatientService {
         log.debug("addPatientt() called with {} ", patientBean);
         msGatewayProxy.addPatient(patientBean);
     }
+
+
 
     /**
      * Updates the details of a specific patient.

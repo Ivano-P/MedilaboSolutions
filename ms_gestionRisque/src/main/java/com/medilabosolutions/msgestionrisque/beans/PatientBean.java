@@ -1,6 +1,5 @@
-package com.medilabosolutions.msfrontend.beans;
+package com.medilabosolutions.msgestionrisque.beans;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,19 +18,16 @@ public class PatientBean {
     private int id;
 
     /** First name of the patient. This field is mandatory. */
-    @NotEmpty(message ="Le prénom est obligatoire")
+
     String prenom;
 
     /** Last name of the patient. This field is mandatory. */
-    @NotEmpty(message ="Le nom est obligatoire")
     String nom;
 
     /** Date of birth of the patient in the format YYYY-MM-DD. This field is mandatory. */
-    @NotEmpty(message ="La date de naissance est obligatoire")
     String dateDeNaissance;
 
     /** Gender of the patient. This field is mandatory. */
-    @NotEmpty(message ="Le genre est obligatoire")
     String genre;
 
     /** Postal address of the patient. */

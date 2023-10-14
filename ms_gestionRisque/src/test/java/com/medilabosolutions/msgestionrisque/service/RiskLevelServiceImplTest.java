@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RiskLevelServiceImplTest {
     private final List<String> triggerTerms = Arrays.asList("term1", "term2", "term3");
-    RiskLevelServiceImpl riskLevelService = new RiskLevelServiceImpl(null, triggerTerms);
+    RiskLevelServiceImpl riskLevelService = new RiskLevelServiceImpl(null, null, null ,triggerTerms);
 
 
     @Test

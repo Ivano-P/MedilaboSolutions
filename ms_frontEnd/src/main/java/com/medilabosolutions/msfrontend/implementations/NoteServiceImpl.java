@@ -45,14 +45,12 @@ public class NoteServiceImpl implements NotesService {
      * @param note The new note to be added to the patient's note history.
      */
     @Override
-    public void updatePatientNote(String patientId, String note) {
+    public void updatePatientNote(int patientId, String note) {
         log.debug("updatePatientNote() called with: {}, {}", patientId, note );
-        //the PatientId in this context refers to PatientId from patientBean
 
-        String patientName = patientService.findPatientById(patientId).getNom();
-
-        //get patientId from patientNote or patientNotesId to not be confused with PatientBeanId
-        String patientNoteId = findPatientNotesByName(patientName).getId();
+        //Patient Id is the same for gestionPatient db and patientNotes db but notesId is String
+        String patientNoteId = (String.valueOf(patientId));
         msGatewayProxy.updatePatientNotesById(patientNoteId, note);
     }
+
 }

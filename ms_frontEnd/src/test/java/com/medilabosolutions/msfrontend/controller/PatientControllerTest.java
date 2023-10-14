@@ -56,9 +56,9 @@ class PatientControllerTest {
     @Test
     void testListPatients() throws Exception{
         //Arrange
-        PatientForSelectionBean simpleMockPatient1 = new PatientForSelectionBean("1",
+        PatientForSelectionBean simpleMockPatient1 = new PatientForSelectionBean(1,
                 "mock", "patient1", "1901-01-01");
-        PatientForSelectionBean simpleMockPatient2 = new PatientForSelectionBean("2",
+        PatientForSelectionBean simpleMockPatient2 = new PatientForSelectionBean(2,
                 "mock", "patient2", "1902-02-02");
 
         List<PatientForSelectionBean> simpleMockPatientsList = List.of(simpleMockPatient1, simpleMockPatient2);
@@ -78,29 +78,29 @@ class PatientControllerTest {
     @Test
     void testpatientInfoAndNotes() throws Exception{
         //Arrange
-        PatientBean mockPatient1 = new PatientBean("1",
+        PatientBean mockPatient1 = new PatientBean(1,
                 "mock", "patient1", "1901-01-01", "F", null,
                 null);
 
-        PatientNotesBean mockPatientNotesBean = new PatientNotesBean("1", mockPatient1.getNom(), List.of("note1", "note2"));
+        PatientNotesBean mockPatientNotesBean = new PatientNotesBean(1, mockPatient1.getNom(), List.of("note1", "note2"));
 
         when(patientService.findPatientById(mockPatient1.getId())).thenReturn(mockPatient1);
         when(notesService.findPatientNotesByName(anyString())).thenReturn(mockPatientNotesBean);
 
         //Act & Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/informations")
-                .param("patientId", mockPatient1.getId()))
-                .andExpect(status().isOk()).andExpect(view().name("patientInfo2"))
+                .param("patientId", String.valueOf(mockPatient1.getId())))
+                .andExpect(status().isOk()).andExpect(view().name("patientInfo"))
                 .andExpect(model().attribute("patient", mockPatient1))
                 .andExpect(model().attribute("patientNotes", mockPatientNotesBean));
 
-        verify(patientService, times(1)).findPatientById(anyString());
+        verify(patientService, times(1)).findPatientById(anyInt());
     }
 
     @Test
     void testGoToUpdatePatientInfoPage() throws Exception{
         //Arrange
-        PatientBean mockPatient1 = new PatientBean("1",
+        PatientBean mockPatient1 = new PatientBean(1,
                 "mock", "patient1", "1901-01-01", "F", null,
                 null);
 
@@ -108,16 +108,16 @@ class PatientControllerTest {
 
         //Act & Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/updateInfo")
-                        .param("patientId", mockPatient1.getId()))
+                        .param("patientId", String.valueOf(mockPatient1.getId())))
                 .andExpect(status().isOk()).andExpect(view().name("updatePatientInfo"))
                 .andExpect(model().attribute("patient", mockPatient1));
-        verify(patientService, times(1)).findPatientById(anyString());
+        verify(patientService, times(1)).findPatientById(anyInt());
     }
 
     @Test
     void testUpdatePatientInfo() throws Exception {
         // Arrange
-        PatientBean mockPatient = new PatientBean("1", "mock", "patient1", "1901-01-01", "F", null, null);
+        PatientBean mockPatient = new PatientBean(1, "mock", "patient1", "1901-01-01", "F", null, null);
 
         // Assuming no validation errors
         doNothing().when(patientService).updatePatient(any(PatientBean.class));
@@ -143,7 +143,7 @@ class PatientControllerTest {
     @Test
     void testAddPatient() throws Exception {
         // Arrange
-        PatientBean mockPatient = new PatientBean("1", "mock", "patient1", "1901-01-01", "F", null, null);
+        PatientBean mockPatient = new PatientBean(1, "mock", "patient1", "1901-01-01", "F", null, null);
 
         // Assuming no validation errors
         doNothing().when(patientService).addPatient(any(PatientBean.class));
@@ -162,7 +162,7 @@ class PatientControllerTest {
         //Arrange
         String patientId = "1";
         String note = "mockNote";
-        doNothing().when(notesService).updatePatientNote(anyString(), anyString());
+        doNothing().when(notesService).updatePatientNote(anyInt(), anyString());
 
         //Act & Assert
         mockMvc.perform(MockMvcRequestBuilders.post("/updateHistory")

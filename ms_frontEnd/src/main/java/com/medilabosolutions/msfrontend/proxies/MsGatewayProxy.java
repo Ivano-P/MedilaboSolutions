@@ -25,14 +25,15 @@ public interface MsGatewayProxy {
     @GetMapping("/gestion/patients")
     List<PatientForSelectionBean> listOfPatients();
 
+
     /**
-     * Retrieves a specific patient's details for updating.
+     * Retrieves a specific patient's details.
      *
      * @param patientId The ID of the patient to retrieve.
      * @return {@link PatientBean} containing the patient's details.
      */
-    @GetMapping("/gestion/update")
-    PatientBean getUpdatePage(@RequestParam("patientId") String patientId);
+    @GetMapping("/gestion/info")
+    PatientBean getPatientInfo(@RequestParam("patientId") int patientId);
 
     /**
      * Updates the details of a specific patient.
@@ -77,5 +78,8 @@ public interface MsGatewayProxy {
      */
     @PostMapping("/historique/updateNotes")
     void updatePatientNotesById(@RequestParam String patientId, @RequestParam String note);
+
+    @GetMapping("/risque/evaluate")
+    String evaluatePatientRisk(@RequestParam int patientId);
 
 }

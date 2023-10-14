@@ -26,19 +26,15 @@ public class RiskLevelController {
     private final RiskLevelService riskLevelService;
 
     /**
-     * Evaluates the risk level of a patient based on their medical history, date of birth, and gender.
+     * Evaluates the risk level of a patient based on their PatientId.
      *
-     * @param personHistory List of medical notes/history for the patient.
-     * @param dateOfBirth Date of birth of the patient in the format YYYY-MM-DD.
-     * @param gender Gender of the patient (e.g., "M" for male, "F" for female).
+     * @param patientId a unique id that represents the patient in db.
      * @return A string representing the anticipated risk level for the patient.
      */
-    @GetMapping("/risk")
-    public String evaluateRiskLevel(@RequestParam("history") List<String> personHistory,
-                                    @RequestParam("dateOfBirth") String dateOfBirth,
-                                    @RequestParam("gender") String gender){
-        log.debug("evaluateRiskLevel() called with {}, {}, {}", personHistory, dateOfBirth, gender);
-        return riskLevelService.anticipateRisk(personHistory, dateOfBirth, gender);
+    @GetMapping("/evaluate")
+    String evaluatePatientRisk(@RequestParam ("patientId") int patientId){
+        log.debug("evaluatePatientRisk() called with {}", patientId);
+        return riskLevelService.getRiskLevel(patientId);
     }
 
 }

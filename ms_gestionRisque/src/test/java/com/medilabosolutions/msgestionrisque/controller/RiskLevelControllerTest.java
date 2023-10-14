@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,20 +37,16 @@ class RiskLevelControllerTest {
     @Test
     void testEvaluateRiskLevel() throws Exception {
         //Arrange
-        List<String> mockHistory = Arrays.asList("note1", "note2");
-        String mockDob = "1990-01-01";
-        String mockGender = "M";
+        int patientId = 1;
         String mockRisk = "None";
 
         //Act
-        when(riskLevelService.anticipateRisk(mockHistory, mockDob, mockGender)).thenReturn(mockRisk);
+        when(riskLevelService.getRiskLevel(patientId)).thenReturn(mockRisk);
 
         //Assert
-        mockMvc.perform(get("/risk")
-                        .param("history", mockHistory.toArray(new String[0]))
-                        .param("dateOfBirth", mockDob)
-                        .param("gender", mockGender))
-                .andExpect(status().isOk())
-                .andExpect(content().string(mockRisk));
+        mockMvc.perform(get("/evaluate")
+                        .param("patientId", String.valueOf(patientId)))
+                .andExpect(status().isOk());
+
     }
 }

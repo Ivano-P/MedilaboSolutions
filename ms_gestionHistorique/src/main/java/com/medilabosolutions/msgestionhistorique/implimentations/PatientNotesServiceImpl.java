@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,6 +84,13 @@ public class PatientNotesServiceImpl implements PatientNotesService {
         patientNotesToUpdate.getNote().add(note);
         //save note
         patientNotesRepositoy.save(patientNotesToUpdate);
+    }
+
+    @Override
+    public void creatPatientHistory(int patientId, String patientName) {
+        log.debug("creatPatientHistoryWithId() called with {}, {}", patientId, patientName);
+        PatientNotes createdHistory = new PatientNotes(String.valueOf(patientId), patientName, new ArrayList<>());
+        patientNotesRepositoy.save(createdHistory);
     }
 
 }

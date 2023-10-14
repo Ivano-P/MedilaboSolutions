@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Détail du patient</title>
-    <link rel="stylesheet" th:href="@{/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/styles.css}" />
 </head>
 <body>
 
 <div class="patient-details">
     <a class="button-style" th:href="@{'/patients'}">Retour</a>
-    <h2>Détails du patient</h2>
+    <h1>Détails du patient</h1>
     <div class="detail-card">
         <p><strong>Prénom :</strong> <span th:text="${patient.prenom}"></span></p>
         <p><strong>Nom :</strong> <span th:text="${patient.nom}"></span></p>
@@ -24,6 +24,36 @@
 
         <a class="button-style" th:href="@{'/updateInfo?patientId=' + ${patient.id}}">Mettre a jour les informations</a>
     </div>
+
+    <div class="detail-card">
+        <h3>Risque de diabète</h3>
+        <p>Niveau : <span th:text="${riskLevel}"></span></p>
+
+    </div>
+
+    <div class="detail-card">
+        <h3>Historique</h3>
+        <ul class="note_history" th:if="${patientNotes.getNote() != null and patientNotes.getNote().size() > 0}">
+            <li th:each="note : ${patientNotes.getNote()}">
+                    <div class="notes">
+                        <p th:text="${note}"></p>
+                    </div>
+            </li>
+        </ul>
+        <form th:action="@{/updateHistory}" method="post" >
+            <input type="hidden" name="patientId" th:value="${patient.id}" />
+
+            <div class="input-group" id="updateHistoryDiv">
+                <label for="note" >Ajoutez une note</label>
+                <textarea id="note" name="note" rows="5" required>
+                </textarea>
+               <!-- <p th:if="${#fields.hasErrors('note')}" th:errors="*{note}" class="error"></p> -->
+            </div>
+            <button class="button-style" type="submit">Ajouter la note</button>
+        </form>
+
+    </div>
+
 </div>
 
 </body>

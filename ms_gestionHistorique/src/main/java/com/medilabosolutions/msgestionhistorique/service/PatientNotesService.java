@@ -13,4 +13,6 @@ public interface PatientNotesService {
     PatientNotes findPatientNotesByPatientName(String patientName);
 
     void updatePatientNotesById(String patientId, String note);
+
+    void creatPatientHistory(int patientId, String patientName);
 }

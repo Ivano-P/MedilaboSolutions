@@ -1,7 +1,6 @@
 package com.medilabosolutions.msgestionpatient.controller;
 
 import com.medilabosolutions.msgestionpatient.beans.PatientBean;
-import com.medilabosolutions.msgestionpatient.controller.PatientController;
 import com.medilabosolutions.msgestionpatient.dto.PatientForSelectionDTO;
 import com.medilabosolutions.msgestionpatient.model.Patient;
 import com.medilabosolutions.msgestionpatient.service.PatientService;
@@ -39,7 +38,7 @@ class PatientControllerTest {
     @Test
     void testListOfAllPatients() throws Exception {
         // Arrange
-        PatientForSelectionDTO mockDTO = new PatientForSelectionDTO("1", "John", "Doe", "1990-01-01");
+        PatientForSelectionDTO mockDTO = new PatientForSelectionDTO(1, "John", "Doe", "1990-01-01");
         List<PatientForSelectionDTO> mockDTOList = List.of(mockDTO);
         when(patientService.convertPatientsToPatientsDTO(anyList())).thenReturn(mockDTOList);
 
@@ -51,21 +50,21 @@ class PatientControllerTest {
     }
 
     @Test
-    void testGetUpdatePage() throws Exception {
+    void getPatientInfo() throws Exception {
         // Arrange
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", null, null, null);
-        when(patientService.findPatientById("1")).thenReturn(mockPatient);
+        Patient mockPatient = new Patient(1, "John", "Doe", "1990-01-01", null, null, null);
+        when(patientService.findPatientById(1)).thenReturn(mockPatient);
 
         // Act & Assert
-        mockMvc.perform(get("/update").param("patientId", "1"))
+        mockMvc.perform(get("/info").param("patientId", "1"))
                 .andExpect(status().isOk());
-        verify(patientService, times(1)).findPatientById("1");
+        verify(patientService, times(1)).findPatientById(1);
     }
 
     @Test
     void testUpdatePatient() {
         // Arrange
-        PatientBean mockPatientBean = new PatientBean("1", "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
+        PatientBean mockPatientBean = new PatientBean(1, "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
         doNothing().when(patientService).updatePatient(mockPatientBean);
 
         // Act
@@ -76,9 +75,9 @@ class PatientControllerTest {
     }
 
     @Test
-    void testAddPatient() {
+    void testAddPatient() throws NoSuchFieldException {
         // Arrange
-        PatientBean mockPatientBean = new PatientBean("1", "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
+        PatientBean mockPatientBean = new PatientBean(1, "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
         doNothing().when(patientService).addPatient(mockPatientBean);
 
         // Act

@@ -5,6 +5,7 @@ import com.medilabosolutions.msgestionpatient.dto.PatientForSelectionDTO;
 import com.medilabosolutions.msgestionpatient.exceptions.PatientNotFoundExcetion;
 import com.medilabosolutions.msgestionpatient.model.Genre;
 import com.medilabosolutions.msgestionpatient.model.Patient;
+import com.medilabosolutions.msgestionpatient.proxies.MsGestionHistoriqueProxy;
 import com.medilabosolutions.msgestionpatient.repository.PatientRepository;
 import com.medilabosolutions.msgestionpatient.service.PatientService;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 /**
@@ -36,6 +35,8 @@ public class PatientServiceImpl implements PatientService {
     /** Repository to access patient data in the database. */
     private final PatientRepository patientRepository;
 
+    private final MsGestionHistoriqueProxy msGestionHistoriqueProxy;
+
     /**
      * Retrieves all patients from the database.
      *
@@ -43,7 +44,6 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     public List<Patient> findAllPatients(){
-
         return patientRepository.findAll();
     }
 
@@ -73,7 +73,7 @@ public class PatientServiceImpl implements PatientService {
      * @throws PatientNotFoundExcetion if no patient is found with the provided ID.
      */
     @Override
-    public Patient findPatientById(String patientId) {
+    public Patient findPatientById(int patientId) {
         log.debug("findPatientById() called with: {}", patientId);
         return patientRepository.findById(patientId).orElseThrow(PatientNotFoundExcetion::new);
     }
@@ -98,7 +98,7 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public void addPatient(PatientBean patientBean) {
+    public void addPatient(PatientBean patientBean) throws NoSuchFieldException {
         log.debug("addPatient() called with: {}", patientBean);
 
         Patient patient = new Patient();
@@ -108,7 +108,19 @@ public class PatientServiceImpl implements PatientService {
         patient.setGenre(Genre.valueOf(patientBean.getGenre()));
         patient.setAdressePostale(patientBean.getAdressePostale());
         patient.setNumeroDeTelephone(patientBean.getNumeroDeTelephone());
-        patientRepository.insert(patient);
+        patientRepository.save(patient);
+
+        creatNewNoteHistoryForNewPatient(patientBean);
+    }
+
+    private void creatNewNoteHistoryForNewPatient(PatientBean patientBean) {
+        log.debug("creatNewNoteHistoryForNewPatient() called with {}", patientBean);
+       Optional<Patient>  patientOptional = patientRepository.findByPrenomAndNomAndDateDeNaissance(patientBean
+               .getPrenom(), patientBean.getNom(), patientBean.getDateDeNaissance());
+
+       Patient searchedPatient = patientOptional.orElseThrow(PatientNotFoundExcetion::new);
+
+        msGestionHistoriqueProxy.creatPatientHistory(searchedPatient.getId(), searchedPatient.getNom());
     }
 
     private Patient convertPatientBeanToPatient(PatientBean patientBean){

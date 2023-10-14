@@ -69,4 +69,10 @@ public class PatientNotesController {
         patientNotesService.updatePatientNotesById(patientId, note);
     }
 
+    @PostMapping("/addNew")
+    public void creatPatientHistory(@RequestParam int patientId, @RequestParam String patientName){
+        log.debug("creatPatientHistoryWithId called with {}, {}", patientId, patientName);
+        patientNotesService.creatPatientHistory(patientId, patientName);
+    }
+
 }

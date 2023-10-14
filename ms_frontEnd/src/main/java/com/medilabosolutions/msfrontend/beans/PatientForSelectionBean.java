@@ -14,7 +14,7 @@ import lombok.Data;
 public class PatientForSelectionBean {
 
     /** The unique identifier for the patient. */
-    private String id;
+    private int id;
 
     /** The first name of the patient. */
     String prenom;

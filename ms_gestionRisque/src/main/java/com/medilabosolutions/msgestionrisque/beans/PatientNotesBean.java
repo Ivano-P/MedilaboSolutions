@@ -1,4 +1,4 @@
-package com.medilabosolutions.msfrontend.beans;
+package com.medilabosolutions.msgestionrisque.beans;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

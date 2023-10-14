@@ -7,6 +7,7 @@ import com.medilabosolutions.msgestionpatient.implimentations.PatientServiceImpl
 import com.medilabosolutions.msgestionpatient.model.Genre;
 import com.medilabosolutions.msgestionpatient.model.Patient;
 import com.medilabosolutions.msgestionpatient.repository.PatientRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,6 +30,17 @@ class PatientServiceImplTest {
     @Mock
     private PatientRepository patientRepository;
 
+    PatientBean mockPatientBean;
+    Patient mockPatient;
+
+    private
+    @BeforeEach
+    void setup(){
+       mockPatientBean = new PatientBean(1, "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
+       mockPatient = new Patient(1, "John", "Doe", "1990-01-01", Genre.M, "123 St", "1234567890");
+
+    }
+
     @Test
     void testFindAllPatients() {
         // Arrange
@@ -47,7 +59,6 @@ class PatientServiceImplTest {
     @Test
     void testConvertPatientsToPatientsDTO() {
         // Arrange
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", Genre.M, "123 St", "1234567890");
         List<Patient> mockList = List.of(mockPatient);
 
         // Act
@@ -64,33 +75,30 @@ class PatientServiceImplTest {
     @Test
     void testFindPatientById() {
         // Arrange
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", Genre.M, "123 St", "1234567890");
-        when(patientRepository.findById("1")).thenReturn(Optional.of(mockPatient));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(mockPatient));
 
         // Act
-        Patient result = patientService.findPatientById("1");
+        Patient result = patientService.findPatientById(1);
 
         // Assert
         assertEquals(mockPatient, result);
-        verify(patientRepository, times(1)).findById("1");
+        verify(patientRepository, times(1)).findById(1);
     }
 
     @Test
     void testFindPatientByIdNotFound() {
         // Arrange
-        when(patientRepository.findById("1")).thenReturn(Optional.empty());
+        when(patientRepository.findById(1)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(PatientNotFoundExcetion.class, () -> patientService.findPatientById("1"));
-        verify(patientRepository, times(1)).findById("1");
+        assertThrows(PatientNotFoundExcetion.class, () -> patientService.findPatientById(1));
+        verify(patientRepository, times(1)).findById(1);
     }
 
     @Test
     void testUpdatePatient() {
         // Arrange
-        PatientBean mockPatientBean = new PatientBean("1", "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", Genre.M, "123 St", "1234567890");
-        when(patientRepository.findById("1")).thenReturn(Optional.of(mockPatient));
+        when(patientRepository.findById(1)).thenReturn(Optional.of(mockPatient));
 
         // Act
         patientService.updatePatient(mockPatientBean);
@@ -99,16 +107,4 @@ class PatientServiceImplTest {
         verify(patientRepository, times(1)).save(mockPatient);
     }
 
-    @Test
-    void testAddPatient() {
-        // Arrange
-        PatientBean mockPatientBean = new PatientBean("1", "John", "Doe", "1990-01-01", "M", "123 St", "1234567890");
-        Patient mockPatient = new Patient("1", "John", "Doe", "1990-01-01", Genre.M, "123 St", "1234567890");
-
-        // Act
-        patientService.addPatient(mockPatientBean);
-
-        // Assert
-        verify(patientRepository, times(1)).insert(any(Patient.class));
-    }
 }

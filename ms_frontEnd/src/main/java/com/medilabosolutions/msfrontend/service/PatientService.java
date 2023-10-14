@@ -35,7 +35,7 @@ public interface PatientService {
      * @param patientId The ID of the patient to be retrieved.
      * @return A {@link PatientBean} representing the patient details.
      */
-    PatientBean findPatientById(String patientId);
+    PatientBean findPatientById(int patientId);
 
 
     /**
