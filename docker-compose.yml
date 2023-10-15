@@ -1,0 +1,37 @@
+version: '3'
+services:
+  eureka-server:
+    image: eureka-server.jar
+    ports:
+      - "9102:9102"
+  ms_gateway:
+    image: ms_gateway.jar
+    ports:
+      - "9103:9103"
+    depends_on:
+      - eureka-server
+  ms_gestionPatient:
+    image: ms_gestionPatient.jar
+    ports:
+      - "9002:9002"
+    depends_on:
+      - eureka-server
+  ms_gestionHistorique:
+    image: ms_gestionhistorique.jar
+    ports:
+      - "9003:9003"
+    depends_on:
+      - eureka-server
+  ms_gestionrisque:
+    image: ms_gestionrisque.jar
+    ports:
+      - "9004:9004"
+    depends_on:
+      - eureka-server
+  ms_frontend:
+    image: ms_frontend.jar
+    ports:
+      - "9001:9001"
+    depends_on:
+      - eureka-server
+      - ms_gateway

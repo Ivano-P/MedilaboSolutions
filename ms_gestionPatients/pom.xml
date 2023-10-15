@@ -162,6 +162,7 @@
                 </executions>
             </plugin>
         </plugins>
+        <finalName>ms_patient</finalName>
     </build>
 
     <repositories>

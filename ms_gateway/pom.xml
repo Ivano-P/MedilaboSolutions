@@ -80,6 +80,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>ms_gateway</finalName>
 	</build>
 
 	<repositories>

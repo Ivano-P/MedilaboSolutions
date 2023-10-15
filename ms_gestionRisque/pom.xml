@@ -122,6 +122,7 @@
 			</plugin>
 
 		</plugins>
+		<finalName>ms_gestionrisque</finalName>
 	</build>
 
 </project>
