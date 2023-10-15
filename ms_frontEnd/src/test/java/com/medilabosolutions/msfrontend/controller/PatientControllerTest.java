@@ -5,6 +5,7 @@ import com.medilabosolutions.msfrontend.beans.PatientForSelectionBean;
 import com.medilabosolutions.msfrontend.beans.PatientNotesBean;
 import com.medilabosolutions.msfrontend.service.NotesService;
 import com.medilabosolutions.msfrontend.service.PatientService;
+import com.medilabosolutions.msfrontend.service.RiskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.ui.Model;
 
+import java.security.Principal;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -33,10 +34,11 @@ class PatientControllerTest {
 
     @Mock
     private NotesService notesService;
+    @Mock
+    private RiskService riskService;
 
     @Mock
-    Model model;
-
+    Principal principal;
 
     private MockMvc mockMvc;
 
@@ -82,16 +84,21 @@ class PatientControllerTest {
                 "mock", "patient1", "1901-01-01", "F", null,
                 null);
 
+
+
         PatientNotesBean mockPatientNotesBean = new PatientNotesBean(1, mockPatient1.getNom(), List.of("note1", "note2"));
 
+        when(principal.getName()).thenReturn("mockUsername");
         when(patientService.findPatientById(mockPatient1.getId())).thenReturn(mockPatient1);
         when(notesService.findPatientNotesByName(anyString())).thenReturn(mockPatientNotesBean);
+        when(riskService.evaluatePatientRisk(anyInt())).thenReturn("None");
 
         //Act & Assert
-        mockMvc.perform(MockMvcRequestBuilders.get("/informations")
+        mockMvc.perform(MockMvcRequestBuilders.get("/informations").principal(principal)
                 .param("patientId", String.valueOf(mockPatient1.getId())))
                 .andExpect(status().isOk()).andExpect(view().name("patientInfo"))
                 .andExpect(model().attribute("patient", mockPatient1))
+                .andExpect(model().attribute("username", "mockUsername" ))
                 .andExpect(model().attribute("patientNotes", mockPatientNotesBean));
 
         verify(patientService, times(1)).findPatientById(anyInt());
