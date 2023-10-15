@@ -25,13 +25,13 @@
         <a class="button-style" th:href="@{'/updateInfo?patientId=' + ${patient.id}}">Mettre a jour les informations</a>
     </div>
 
-    <div class="detail-card">
+    <div class="detail-card" th:if="${username != 'userO'}">
         <h3>Risque de diabète</h3>
         <p>Niveau : <span th:text="${riskLevel}"></span></p>
 
     </div>
 
-    <div class="detail-card">
+    <div class="detail-card" th:if="${username != 'userO'}">
         <h3>Historique</h3>
         <ul class="note_history" th:if="${patientNotes.getNote() != null and patientNotes.getNote().size() > 0}">
             <li th:each="note : ${patientNotes.getNote()}">

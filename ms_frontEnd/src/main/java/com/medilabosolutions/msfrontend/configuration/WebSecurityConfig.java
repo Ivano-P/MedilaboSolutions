@@ -18,15 +18,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    private final PasswordEncoder passwordEncoder;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        log.debug( "securityWebFilterChain() called with {}", httpSecurity);
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        log.debug("securityWebFilterChain() called with {}", httpSecurity);
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers( "/").permitAll()
-                        .anyRequest().permitAll())
-                .formLogin(form -> form.disable())
-                .httpBasic(httpBasic -> httpBasic.disable())
+                        .requestMatchers("/", "/styles.css").permitAll()
+                        .requestMatchers("/patients", "/informations", "/updateInfo" , "/updatePatient",
+                                "/addPatient", "/addPatient" , "/updateHistory").hasRole("USER").anyRequest()
+                        .authenticated())
+                .formLogin(form -> form.defaultSuccessUrl("/patients")) //aller a cette page apres connexion
+                .logout(auth -> auth.logoutUrl("/logout") // pour notre boutton de déconnexion
+                        .logoutSuccessUrl("/") // Invalider la session HTTP
+                        .invalidateHttpSession(true).deleteCookies("JSESSIONID"))// Supprimer le cookie de session
                 .csrf(csrfSpec -> csrfSpec.disable());
 
         return httpSecurity.build();
@@ -34,15 +40,22 @@ public class WebSecurityConfig {
 
 
     @Bean
-    public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
+    public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         log.info("inMemoryUserDetailsManager() called - creation of in memory user");
         return new InMemoryUserDetailsManager(
                 User
-                        .withUsername("user1")
-                        .password("{noop}1234")
+                        .withUsername("userP")
+                        .password(passwordEncoder.encode(System.getenv("TEST_USER_PWD")))
+                        .roles("USER")
+                        .build(),
+
+                User.withUsername("userO")
+                        .password(passwordEncoder.encode(System.getenv("TEST_USER_PWD")))
                         .roles("USER")
                         .build()
         );
 
     }
+
+
 }

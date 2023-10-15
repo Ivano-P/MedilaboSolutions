@@ -30,4 +30,8 @@ public class MsFrontEndApplication {
 		SpringApplication.run(MsFrontEndApplication.class, args);
 	}
 
+	@Bean()
+	public PasswordEncoder passwordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
 }

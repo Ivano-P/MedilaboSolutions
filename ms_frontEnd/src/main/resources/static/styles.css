@@ -127,3 +127,7 @@ body {
     list-style-type:square;
 }
 
+#disconnection_button{
+    margin-right: 0;
+}
+

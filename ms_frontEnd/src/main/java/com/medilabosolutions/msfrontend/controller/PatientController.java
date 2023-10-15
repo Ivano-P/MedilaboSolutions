@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -71,7 +72,7 @@ public class PatientController {
      * @return The notesHistory view.
      */
     @GetMapping("/informations")
-    public String patientInfoAndNotes(Model model,
+    public String patientInfoAndNotes(Model model, Principal principal,
                                       @RequestParam("patientId") int patientId){
 
         log.debug("patientNoteHistory() called with {}, {} ", model, patientId);
@@ -80,6 +81,8 @@ public class PatientController {
         PatientNotesBean patientNotes = notesService.findPatientNotesByName(chosenPatient.getNom());
         String patientRiskLevel = riskService.evaluatePatientRisk(patientId);
 
+        String username = principal.getName();
+        model.addAttribute("username", username);
         model.addAttribute("patient", chosenPatient);
         model.addAttribute("patientNotes", patientNotes);
         model.addAttribute("riskLevel", patientRiskLevel);
