@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Ivano
  */
-@FeignClient(name="MsGestionPatients", url = "localhost:9002")
+@FeignClient(name="MsGestionPatients", url ="ms-gestionpatient:9002")
 public interface MsGestionPatientsProxy {
 
     /**

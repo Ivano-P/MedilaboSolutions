@@ -4,15 +4,14 @@ services:
     image: eureka-server-image
     ports:
       - "9102:9102"
-  ms_gateway:
+  ms-gateway:
     image: ms_gateway-image
     ports:
       - "9103:9103"
     depends_on:
       - eureka-server
-  ms_gestionPatient:
+  ms-gestionpatient:
     image: ms_gestionpatient-image
-    restart: none
     environment: 
       - MS_PATIENT_DB_URL=${MS_PATIENT_DB_URL}
       - SQL_DB_USERNAME=${SQL_DB_USERNAME}
@@ -21,8 +20,7 @@ services:
       - "9002:9002"
     depends_on:
       - eureka-server
-      - db-patients
-  ms_gestionHistorique:
+  ms-gestionhistorique:
     image: ms_gestionhistorique-image
     environment: 
       - NOSQL_DB_USERNAME=${NOSQL_DB_USERNAME}
@@ -34,13 +32,13 @@ services:
       - "9003:9003"
     depends_on:
       - eureka-server
-  ms_gestionrisque:
+  ms-gestionrisque:
     image: ms_gestionrisque-image
     ports:
       - "9004:9004"
     depends_on:
       - eureka-server
-  ms_frontend:
+  ms-frontend:
     image: ms_frontend-image
     environment: 
       - TEST_USER_PWD=${TEST_USER_PWD}
@@ -48,20 +46,9 @@ services:
       - "9001:9001"
     depends_on:
       - eureka-server
-      - ms_gateway
-  db-patients:
-    image: mysql:8.1.0
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: ms_patients_db
-      MYSQL_USER: ${SQL_DB_USERNAME}
-      MYSQL_PASSWORD: ${SQL_DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./patient-sql/init-mysql.sql:/docker-entrypoint-initdb.d/init-mysql.sql
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      retries: 10
-      interval: 3s
-      timeout: 30s
+      - ms-gateway
+      - ms-gestionpatient
+      - ms-gestionrisque
+      - ms-gestionhistorique
+    
+

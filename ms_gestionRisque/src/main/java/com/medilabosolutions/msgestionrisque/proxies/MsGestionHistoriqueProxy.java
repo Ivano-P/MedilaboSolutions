@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Ivano
  */
-@FeignClient(name="MsGestionHistorique", url = "localhost:9003")
+@FeignClient(name="MsGestionHistorique", url ="ms-gestionhistorique:9003")
 public interface MsGestionHistoriqueProxy {
 
     /**

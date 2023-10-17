@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-@Entity
-@Table(name = "patients")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "patients")
+@Data
+@Entity
 public class Patient implements Serializable {
 
     @Id
