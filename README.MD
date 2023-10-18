@@ -21,11 +21,11 @@ L’application analyse ces données pour évaluer leur niveau de risque vis-à-
 - spring cloud gateway 
 - spring-boot-starter-security
 - spring-boot-starter-validation
-- spring-boot-starter-oauth2-client
 - mysql-connector-j
 - spring-boot-starter-thymeleaf\
 - spring-boot-starter-data-jpa
 - spring-boot-starter-parent
+- eureka server and client
 - Feign 
 
 ## Instalation et mise en route
