@@ -38,6 +38,8 @@ services:
       - "9004:9004"
     depends_on:
       - eureka-server
+      - ms-gestionpatient
+      - ms-gestionhistorique
   ms-frontend:
     image: ms_frontend-image
     environment: 
